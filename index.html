@@ -26,7 +26,7 @@ body{
   background:linear-gradient(170deg,#FFF3F8 0%,#F3F6FF 55%,#F0FBF5 100%);
   color:var(--ink);
   min-height:100%;
-  padding-bottom:92px;
+  padding-bottom:calc(140px + env(safe-area-inset-bottom));
 }
 .wrap{max-width:480px;margin:0 auto;padding:14px 14px 0;}
 /* ---------- countdown header ---------- */
@@ -56,7 +56,7 @@ body{
 }
 .card h2{font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;margin-bottom:10px;}
 .card h2 .tag{font-size:11px;font-weight:700;color:#fff;border-radius:999px;padding:2px 10px;}
-.tag.t-pink{background:var(--pink);} .tag.t-mint{background:var(--mint);} .tag.t-sky{background:var(--sky);} .tag.t-lav{background:var(--lav);}
+.tag.t-pink{background:var(--pink);} .tag.t-mint{background:var(--mint);} .tag.t-sky{background:var(--sky);} .tag.t-lav{background:var(--lav);} .tag.t-green{background:#AACB63;}
 /* ---------- checklist ---------- */
 .task{
   display:flex;align-items:center;gap:12px;
@@ -65,18 +65,19 @@ body{
   transition:background .2s;
   cursor:pointer;user-select:none;-webkit-user-select:none;
 }
-.task.mint-bg{background:#F0FBF6;} .task.sky-bg{background:#F2F8FE;} .task.lav-bg{background:#F7F3FC;}
+.task.mint-bg{background:#F0FBF6;} .task.sky-bg{background:#F2F8FE;} .task.lav-bg{background:#F7F3FC;} .task.green-bg{background:#F6FAE8;}
 .task .box{
   width:28px;height:28px;border-radius:10px;flex:none;
   border:2.5px solid var(--pink);background:#fff;
   display:flex;align-items:center;justify-content:center;
   font-size:17px;color:#fff;transition:all .15s;
 }
-.task.mint-bg .box{border-color:var(--mint);} .task.sky-bg .box{border-color:var(--sky);} .task.lav-bg .box{border-color:var(--lav);}
+.task.mint-bg .box{border-color:var(--mint);} .task.sky-bg .box{border-color:var(--sky);} .task.lav-bg .box{border-color:var(--lav);} .task.green-bg .box{border-color:#AACB63;}
 .task.done .box{background:var(--pink);border-color:var(--pink);}
 .task.mint-bg.done .box{background:var(--mint);border-color:var(--mint);}
 .task.sky-bg.done .box{background:var(--sky);border-color:var(--sky);}
 .task.lav-bg.done .box{background:var(--lav);border-color:var(--lav);}
+.task.green-bg.done .box{background:#AACB63;border-color:#AACB63;}
 .task .txt{font-size:15px;font-weight:700;}
 .task.done .txt{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--pink-soft);}
 .all-done-badge{
@@ -101,9 +102,10 @@ body{
 .garden-card{padding:12px;}
 .garden-scene{border-radius:18px;overflow:hidden;display:block;width:100%;}
 .pet-panel{display:flex;gap:10px;margin-top:12px;}
-.pet-col{flex:1;background:var(--pink-pale);border-radius:16px;padding:10px;text-align:center;}
-.pet-col.b{background:#F7F3FC;}
-.pet-col .p-name{font-size:13.5px;font-weight:800;}
+.pet-col{flex:1;border-radius:16px;padding:10px;text-align:center;}
+.pet-col.a{background:#F2F8FE;}
+.pet-col.b{background:var(--pink-pale);}
+.pet-col .p-name{font-size:13.5px;font-weight:800;line-height:1.45;}
 .pet-col .p-stage{font-size:12px;color:var(--ink-soft);font-weight:700;margin:2px 0 6px;}
 .pet-col .p-next{font-size:11px;color:var(--ink-soft);margin-top:5px;}
 .snack-btn{
@@ -111,7 +113,7 @@ body{
   font-size:13.5px;font-weight:800;font-family:inherit;color:#fff;
   background:var(--pink);cursor:pointer;
 }
-.pet-col.b .snack-btn{background:var(--lav);}
+.pet-col.a .snack-btn{background:var(--sky);}
 .snack-btn:disabled{background:#E3DAE6;color:#B4A8B8;}
 .garden-note{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:10px;font-weight:600;line-height:1.6;}
 @keyframes petYay{0%{transform:translateY(0)}25%{transform:translateY(-14px) rotate(-4deg)}50%{transform:translateY(0)}70%{transform:translateY(-8px) rotate(4deg)}100%{transform:translateY(0)}}
@@ -328,14 +330,12 @@ const WD=['にち','げつ','か','すい','もく','きん','ど'];
 
 /* ---------- 今日のパターン判定 ---------- */
 function patternFor(dateStr){
-  const ev=S.events.find(e=>e.date===dateStr);
-  if(ev) return {type:'event', label:'🎪 '+ev.name, tasks:ev.tasks, bg:'lav-bg'};
   const dow=parseD(dateStr).getDay();
   if(dow===0 || isJPHoliday(dateStr))
     return {type:'sunday', label:'🚗 しんせきの日(日曜・祝日)', tasks:S.patterns.sunday, bg:'sky-bg'};
   if(dow===6)
     return {type:'saturday', label:'🎵 ならいごとの日(土曜)', tasks:S.patterns.saturday, bg:'mint-bg'};
-  return {type:'weekday', label:'☀️ いつもの日(平日)', tasks:S.patterns.weekday, bg:''};
+  return {type:'weekday', label:'☀️ いつもの日(平日)', tasks:S.patterns.weekday, bg:'green-bg'};
 }
 
 /* ---------- チェック状態 ---------- */
@@ -396,6 +396,7 @@ function renderToday(){
   const el=document.getElementById('view-today');
   const t=todayStr();
   const pat=patternFor(t);
+  const ev=S.events.find(e=>e.date===t);
   const ck=checksFor(t);
   const d=parseD(t);
   const dateLabel=fmtMD(t)+'('+WD[d.getDay()]+')';
@@ -424,12 +425,13 @@ function renderToday(){
     <div class="cd-label">${cdLabel}</div>
     <div class="cd-num" ${typeof cdNum==='number'?'':'style="font-size:26px;padding:6px 0;"'}>${cdNum}<small>${cdUnit}</small></div>
     <div class="cd-date">きょうは ${dateLabel}</div>
-    <div class="pattern-chip">${pat.label}</div>
+    <div class="pattern-chip">${pat.label}</div>${ev?`<div class="pattern-chip" style="margin-left:6px;">🎪 ${escH(ev.name)}</div>`:''}
   </div>`;
 
   /* きょうのやること */
-  html+=`<div class="card"><h2>📝 きょうのやること <span class="tag ${pat.type==='event'?'t-lav':pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':'t-pink'}">${pat.type==='event'?'イベント日':'まいにち'}</span></h2>`;
-  if(pat.tasks.length===0){
+  html+=`<div class="card"><h2>📝 きょうのやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':'t-green'}">まいにち</span></h2>`;
+  const evTasks=ev?ev.tasks:[];
+  if(pat.tasks.length===0 && evTasks.length===0){
     html+=`<div class="empty-msg">やることが とうろくされていません<br>(せってい / イベントで追加できます)</div>`;
   }
   pat.tasks.forEach(task=>{
@@ -437,7 +439,16 @@ function renderToday(){
     html+=`<div class="task ${pat.bg} ${done?'done':''}" onclick="toggleDaily('${esc(task)}')">
       <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
   });
-  if(pat.tasks.length>0 && pat.tasks.every(x=>ck.daily[x])){
+  if(ev){
+    html+=`<div style="font-size:13px;font-weight:800;margin:10px 2px 6px;color:#8A79B8;">🎪 ${escH(ev.name)}</div>`;
+    evTasks.forEach(task=>{
+      const done=!!ck.daily[task];
+      html+=`<div class="task lav-bg ${done?'done':''}" onclick="toggleDaily('${esc(task)}')">
+        <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
+    });
+  }
+  const allToday=pat.tasks.concat(evTasks);
+  if(allToday.length>0 && allToday.every(x=>ck.daily[x])){
     html+=`<div class="all-done-badge">🎉 きょうのやること ぜんぶクリア!</div>`;
   }
   html+=`</div>`;
@@ -448,10 +459,10 @@ function renderToday(){
     const ckKey=who==='a'?'ca':'cb';
     const allDone=list.length>0 && list.every(x=>ck[ckKey][x]);
     const granted=S.granted[t]&&S.granted[t][who];
-    html+=`<div class="card"><h2>${who==='a'?'💙':'💜'} ${escH(S.names[who])}のおてつだい <span class="tag ${who==='a'?'t-sky':'t-lav'}">ペットのおやつ</span></h2>`;
+    html+=`<div class="card"><h2>${who==='a'?'💙':'💗'} ${escH(S.names[who])}のおてつだい <span class="tag ${who==='a'?'t-sky':'t-pink'}">ペットのおやつ</span></h2>`;
     list.forEach(task=>{
       const done=!!ck[ckKey][task];
-      html+=`<div class="task ${who==='a'?'sky-bg':'lav-bg'} ${done?'done':''}" onclick="toggleChore('${who}','${esc(task)}')">
+      html+=`<div class="task ${who==='a'?'sky-bg':''} ${done?'done':''}" onclick="toggleChore('${who}','${esc(task)}')">
         <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
     });
     if(allDone){
@@ -563,7 +574,7 @@ function renderGarden(){
     const kind=st===0?'':'('+SPECIES[p.sp].name+')';
     const nameBtn=(st>0&&!p.petName)?`<button class="btn-sub" style="margin-top:6px;padding:7px 0;" onclick="openNaming('${who}',false)">✏️ なまえをつける</button>`:'';
     return `<div class="pet-col ${who}" style="position:relative;" id="panel-${who}">
-      <div class="p-name">${escH(S.names[who])}の ${escH(label)}</div>
+      <div class="p-name">${escH(S.names[who])}の<br>${escH(label)}</div>
       <div class="p-stage">${STAGE_NAMES[st]}${kind} 🍪×${p.fed}</div>
       <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">
         🍪 おやつをあげる${p.snacks>0?' ('+p.snacks+'こ)':''}
@@ -678,7 +689,7 @@ function renderEvents(){
   el.innerHTML=`
   <div class="card">
     <h2>🎪 イベントいちらん <span class="tag t-lav">当日はリスト切替</span></h2>
-    <div class="set-note">登録した日は「きょうのやること」がイベント用リストに切り替わります(おてつだいはそのまま続きます)。</div>
+    <div class="set-note">登録した日は、その日の「きょうのやること」にイベントのやることが追加されます。</div>
     ${list}
   </div>
   <div class="card">
@@ -736,14 +747,13 @@ function renderSettings(){
     <div class="form-row"><label>おやすみの名前(例:なつやすみ、ふゆやすみ、はるやすみ)</label><input type="text" id="set-vacname" value="${escA(S.vacName||'なつやすみ')}"></div>
     <div class="form-row"><label>はじまり</label><input type="date" id="set-start" value="${S.start}"></div>
     <div class="form-row"><label>おわり(カウントダウンの目標日)</label><input type="date" id="set-end" value="${S.end}"></div>
-    <div class="set-note">日曜と祝日(元日・成人の日・春分の日・振替休日なども自動判定)は「しんせきの日」パターンになります。</div>
   </div>
   <div class="card">
     <h2>📝 まいにちのやること</h2>
     <div class="set-note">1行に1つずつ書いてください。曜日で自動的に切り替わります。</div>
     <div class="form-row"><label>☀️ 平日</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
     <div class="form-row"><label>🎵 土曜(ならいごとの日)</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
-    <div class="form-row"><label>🚗 日曜・祝日(しんせきの日)</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
+    <div class="form-row"><label>🚗 日曜・祝日</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
   </div>
   <div class="card">
     <h2>🧺 おてつだい(ペットのおやつ)</h2>
