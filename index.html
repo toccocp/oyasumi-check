@@ -693,44 +693,66 @@ function renderEvents(){
           <div class="ev-name">${escH(ev.name)}</div>
           <div class="ev-tasks">${ev.tasks.map(escH).join(' / ')||'(タスクなし)'}</div>
         </div>
+        <button class="ev-del" style="background:#EAF3FA;color:#5E8FBE;" onclick="editEvent(${idx})">✏️</button>
         <button class="ev-del" onclick="delEvent(${idx})">✕</button>
       </div>`;
     });
   }
+  const editing=(evEditing!==null&&S.events[evEditing])?S.events[evEditing]:null;
   el.innerHTML=`
   <div class="card">
-    <h2>🎪 イベントいちらん <span class="tag t-lav">当日はリスト切替</span></h2>
-    <div class="set-note">登録した日は、その日の「きょうのやること」にイベントのやることが追加されます。</div>
+    <h2>🎪 イベントいちらん <span class="tag t-lav">当日リストに追加</span></h2>
+    <div class="set-note">登録した日は、その日の「きょうのやること」にイベントのやることが追加されます。日付と名前だけ先に登録して、あとから✏️で「やること」を追記することもできます。</div>
     ${list}
   </div>
-  <div class="card">
-    <h2>➕ イベントを追加</h2>
-    <div class="form-row"><label>日づけ</label><input type="date" id="ev-date" min="${S.start}" max="${S.end}"></div>
-    <div class="form-row"><label>イベント名(例:花火大会、おばあちゃんち)</label><input type="text" id="ev-name" placeholder="イベントの名前"></div>
-    <div class="form-row"><label>その日のやること(1行に1つ)</label><textarea id="ev-tasks" placeholder="もちものをじゅんび&#10;すいとうをもつ&#10;はやめにおふろ"></textarea></div>
-    <button class="btn-main" onclick="addEvent()">🎪 イベントをとうろく</button>
+  <div class="card" id="ev-form-card">
+    <h2>${editing?'✏️ イベントを編集('+fmtMD(editing.date)+' '+escH(editing.name)+')':'➕ イベントを追加'}</h2>
+    <div class="form-row"><label>日づけ</label><input type="date" id="ev-date" min="${S.start}" max="${S.end}" value="${editing?editing.date:''}"></div>
+    <div class="form-row"><label>イベント名(例:花火大会、おばあちゃんち)</label><input type="text" id="ev-name" placeholder="イベントの名前" value="${editing?escA(editing.name):''}"></div>
+    <div class="form-row"><label>その日のやること(1行に1つ・空でもOK)</label><textarea id="ev-tasks" placeholder="もちものをじゅんび&#10;すいとうをもつ&#10;はやめにおふろ">${editing?escH(editing.tasks.join('\n')):''}</textarea></div>
+    <button class="btn-main" onclick="addEvent()">${editing?'💾 変更をほぞんする':'🎪 イベントをとうろく'}</button>
+    ${editing?'<button class="btn-sub" onclick="cancelEdit()">編集をやめる(もとにもどす)</button>':''}
   </div>
   <div class="section-gap"></div>`;
 }
+function editEvent(i){
+  evEditing=i;
+  renderEvents();
+  const f=document.getElementById('ev-form-card');
+  if(f) f.scrollIntoView({behavior:'smooth'});
+}
+function cancelEdit(){
+  evEditing=null;
+  renderEvents();
+}
+let evEditing=null;
 function addEvent(){
   const date=document.getElementById('ev-date').value;
   const name=document.getElementById('ev-name').value.trim();
   const tasks=document.getElementById('ev-tasks').value.split('\n').map(x=>x.trim()).filter(x=>x);
   if(!date){ toast('日づけを えらんでください'); return; }
   if(!name){ toast('イベント名を 入れてください'); return; }
-  const exist=S.events.find(e=>e.date===date);
-  if(exist){
-    if(!confirm(fmtMD(date)+' には「'+exist.name+'」が登録済みです。上書きしますか?')) return;
-    S.events.splice(S.events.indexOf(exist),1);
+  const target=(evEditing!==null&&S.events[evEditing])?S.events[evEditing]:null;
+  const dup=S.events.find(e=>e.date===date&&e!==target);
+  if(dup){
+    if(!confirm(fmtMD(date)+' には「'+dup.name+'」が登録済みです。上書きしますか?')) return;
+    S.events.splice(S.events.indexOf(dup),1);
   }
-  S.events.push({date,name,tasks});
+  if(target){
+    target.date=date; target.name=name; target.tasks=tasks;
+    toast('✏️ 「'+name+'」を更新しました');
+  }else{
+    S.events.push({date,name,tasks});
+    toast('🎪 「'+name+'」をとうろくしました');
+  }
+  evEditing=null;
   save(); renderEvents();
-  toast('🎪 「'+name+'」をとうろくしました');
 }
 function delEvent(i){
   const ev=S.events[i];
   if(!confirm('「'+ev.name+'」を削除しますか?')) return;
   S.events.splice(i,1);
+  evEditing=null;
   save(); renderEvents();
 }
 
