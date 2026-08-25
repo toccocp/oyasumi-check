@@ -205,6 +205,68 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 }
 .sp-card.sel{border-color:var(--pink);background:var(--pink-pale);}
 .sp-card .sp-name{font-size:13.5px;font-weight:800;margin-top:4px;}
+
+/* ---------- date nav / banner ---------- */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+.date-nav button{
+  border:none;background:rgba(255,255,255,.8);color:#8A5A72;
+  width:34px;height:34px;border-radius:12px;font-size:14px;font-weight:800;
+  font-family:inherit;cursor:pointer;flex:none;
+}
+.date-nav button:disabled{opacity:.3;cursor:default;}
+.date-nav .dn-date{font-size:26px;font-weight:800;color:#7A4A66;line-height:1.2;}
+.date-nav .dn-date.small{font-size:15px;font-weight:800;}
+.day-banner{
+  margin-top:10px;background:#FFF6DC;border:1.5px solid #FFDFA0;border-radius:14px;
+  padding:9px 12px;font-size:12.5px;font-weight:700;color:#9A7530;text-align:center;cursor:pointer;
+}
+/* ---------- garden scene wrap (effects) ---------- */
+.scene-wrap{position:relative;}
+.heart-float{z-index:5;transform:translate(-50%,-100%);}
+@keyframes bflyFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,-7px)}}
+.bfly{transform-box:fill-box;transform-origin:50% 50%;animation:bflyFloat 3.6s ease-in-out infinite;}
+@media (prefers-reduced-motion:reduce){.bfly{animation:none;}}
+/* ---------- pet stats ---------- */
+.stat-card{background:var(--card);border-radius:var(--radius);padding:14px 14px 10px;margin-top:14px;box-shadow:0 4px 14px rgba(160,140,180,.12);}
+.stat-card.a{border-left:6px solid var(--sky);}
+.stat-card.b{border-left:6px solid var(--pink);}
+.stat-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:800;margin-bottom:8px;}
+.stat-head .st-total{font-size:12px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 10px;}
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.stat-row .st-name{font-size:12.5px;font-weight:800;width:82px;flex:none;}
+.stat-row .st-bar{flex:1;height:12px;background:#F2ECF3;border-radius:999px;overflow:hidden;}
+.stat-row .st-fill{height:100%;border-radius:999px;transition:width .3s;}
+.st-fill.k-chikara{background:linear-gradient(90deg,#FFB48E,#FF8E8E);}
+.st-fill.k-hayasa{background:linear-gradient(90deg,#FFE08F,#FFC46B);}
+.st-fill.k-kashiko{background:linear-gradient(90deg,#9FD3F5,#7FB6F0);}
+.st-fill.k-yasashi{background:linear-gradient(90deg,#FFC1DA,#F79EC8);}
+.stat-row .st-val{font-size:13px;font-weight:800;width:28px;text-align:right;flex:none;}
+.stat-row .st-plus{
+  border:none;background:var(--mint);color:#fff;border-radius:10px;
+  width:32px;height:30px;font-size:15px;font-weight:800;font-family:inherit;flex:none;cursor:pointer;
+}
+.stat-row .st-plus:disabled{background:#EDE6EF;color:#C6BAC9;cursor:default;}
+.st-pt{text-align:center;font-size:12px;font-weight:800;color:var(--ink-soft);margin-top:6px;}
+.st-pt.on{color:#5FA88A;background:#EEFAF3;border-radius:12px;padding:7px;}
+/* ---------- album ---------- */
+.album-item{display:flex;align-items:center;gap:10px;background:#FBF7FF;border:1.5px solid #EADFF7;border-radius:16px;padding:10px;margin-bottom:8px;}
+.album-item .al-img{flex:none;background:#fff;border-radius:12px;padding:4px;}
+.album-item .al-body{flex:1;min-width:0;}
+.al-name{font-size:15px;font-weight:800;}
+.al-sub{font-size:11.5px;color:var(--ink-soft);font-weight:700;}
+.al-days{font-size:12.5px;font-weight:800;color:#8A79B8;margin:3px 0 1px;}
+.al-stats{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;}
+.al-st{font-size:11px;font-weight:800;background:#fff;border:1px solid #E6DCF2;border-radius:999px;padding:2px 7px;color:#7C6B8A;}
+.al-st.total{background:var(--lav);border-color:var(--lav);color:#fff;}
+/* ---------- settings extras ---------- */
+.hw-block{background:#FBF8FB;border-radius:16px;padding:10px;margin-bottom:10px;}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:8px;cursor:pointer;}
+.switch-row input{width:44px;height:26px;flex:none;accent-color:#7ED8B4;}
+.deco-row{display:flex;align-items:center;gap:10px;padding:5px 2px;border-bottom:1px dashed #F0E6EE;}
+.deco-row:last-child{border-bottom:none;}
+.deco-m{font-size:12.5px;font-weight:800;color:var(--ink-soft);width:36px;flex:none;}
+.deco-e{font-size:18px;letter-spacing:.12em;}
+.sp-hint{margin-top:12px;background:#fff;border-radius:16px;padding:10px 12px;font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.9;box-shadow:0 3px 10px rgba(160,140,180,.12);}
 .hidden{display:none!important;}
 .section-gap{height:4px;}
 </style>
@@ -222,10 +284,10 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 </div>
 
 <nav class="nav">
-  <button id="nav-today" onclick="showTab('today')"><span class="ic">✅</span>きょう</button>
+  <button id="nav-today" onclick="showTab('today')"><span class="ic">✅</span>今日</button>
   <button id="nav-garden" onclick="showTab('garden')"><span class="ic">🐾</span>はこにわ</button>
   <button id="nav-events" onclick="showTab('events')"><span class="ic">🎪</span>イベント</button>
-  <button id="nav-settings" onclick="showTab('settings')"><span class="ic">⚙️</span>せってい</button>
+  <button id="nav-settings" onclick="showTab('settings')"><span class="ic">⚙️</span>設定</button>
 </nav>
 
 <div id="toast"></div>
@@ -235,18 +297,52 @@ const PET_IMG={"usagi":[{"s":"data:image/webp;base64,UklGRoQeAABXRUJQVlA4WAoAAAA
 </script>
 <script>
 /* =========================================================
-   おやすみチェック  v2.0(画像版)
+   おやすみチェック  v3.0
    単一HTML / localStorage / iPhone Safari 向け
 ========================================================= */
 const KEY='natsuyasumiApp2026';
 
+/* ---------- ペットのパラメータ定義 ---------- */
+const STATS=[
+  {k:'chikara', name:'ちから',   icon:'💪'},
+  {k:'hayasa',  name:'すばやさ', icon:'⚡'},
+  {k:'kashiko', name:'かしこさ', icon:'📘'},
+  {k:'yasashi', name:'やさしさ', icon:'💗'}
+];
+const SPECIES={
+  usagi:  {name:'うさぎ',      egg:'わたげのたまご',   base:{chikara:6, hayasa:14,kashiko:9, yasashi:11}},
+  dragon: {name:'ドラゴン',    egg:'くせげのたまご',   base:{chikara:15,hayasa:9, kashiko:10,yasashi:6}},
+  unicorn:{name:'ユニコーン',  egg:'つののたまご',     base:{chikara:8, hayasa:11,kashiko:12,yasashi:9}},
+  lion:   {name:'ライオン',    egg:'しっぽのたまご',   base:{chikara:14,hayasa:11,kashiko:7, yasashi:8}},
+  griffon:{name:'グリフォン',  egg:'くちばしのたまご', base:{chikara:11,hayasa:13,kashiko:10,yasashi:6}},
+  hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{chikara:7, hayasa:7, kashiko:11,yasashi:15}}
+};
+const STAGE_NAMES=['たまご','あかちゃん','こども','おとな','キラキラ'];
+/* 育成しきい値: 2026年の夏休み(36日)のペースで固定。冬休み・春休みでも同じ */
+const STAGE_TH=[0,3,9,17,29];
+
+/* ---------- 月ごとの四すみのかざり ---------- */
+const DECO={
+  1:['⛄','🎍','🍊','🧤'], 2:['⛄','👹','❄️','🍫'], 3:['🌸','🌷','🦋','🍡'],
+  4:['🌸','🎏','🌱','🍙'], 5:['🎏','🌿','☀️','🍓'], 6:['☔','🐌','🐸','💧'],
+  7:['🌻','🍉','⛱️','🎐'], 8:['🌻','🍉','🎆','🍧'], 9:['🌕','🍇','🍠','🐰'],
+  10:['🎃','🍁','🌰','👻'],11:['🍁','🍂','🍄','🌰'],12:['🎄','⛄','🎅','🍊']
+};
+
+function newPet(){
+  return {sp:null,fed:0,snacks:0,petName:null,since:null,points:0,
+          stats:{chikara:0,hayasa:0,kashiko:0,yasashi:0}};
+}
+
 const DEFAULT_STATE={
+  ver:3,
   setup:false,
   vacName:'なつやすみ',
   names:{a:'おにいちゃん', b:'いもうとちゃん'},
   start:'2026-07-22',
   end:'2026-08-26',
   patterns:{
+    school:['あさのしたく','がっこうのじゅんび','しゅくだい','よるのしたく'],
     weekday:['あさのしたく','べんきょうタイム','そとあそび・うんどう','よるのしたく'],
     saturday:['あさのしたく','ならいごとのじゅんび','ならいごと がんばる','よるのしたく'],
     sunday:['あさのしたく','おでかけのじゅんび','げんきに ごあいさつ','よるのしたく']
@@ -255,11 +351,14 @@ const DEFAULT_STATE={
     a:['パジャマをたたむ','せんたくものをたたむ','じぶんのものをかたづける'],
     b:['パジャマをたたむ','せんたくものをたたむ','じぶんのものをかたづける']
   },
-  homework:[{name:'なつやすみのドリル',total:40,done:0}],
+  homework:{ a:[{name:'なつやすみのドリル',total:40,done:0}], b:[] },
+  hwShow:{a:true,b:true},
   events:[],
-  pets:{a:{sp:null,fed:0,snacks:0,petName:null}, b:{sp:null,fed:0,snacks:0,petName:null}},
+  pets:{a:newPet(), b:newPet()},
+  album:[],
   granted:{},
-  checks:{}
+  checks:{},
+  viewDate:null
 };
 
 /* ---------- 日本の祝日 自動判定(振替休日・国民の休日も対応) ---------- */
@@ -281,61 +380,93 @@ function isBaseHoliday(d){
 function isJPHoliday(dateStr){
   const d=parseD(dateStr);
   if(isBaseHoliday(d)) return true;
-  /* 振替休日: 日曜の祝日から連続する祝日の翌平日 */
   const prev=new Date(d);
   while(true){
     prev.setDate(prev.getDate()-1);
     if(!isBaseHoliday(prev)) break;
     if(prev.getDay()===0) return true;
   }
-  /* 国民の休日: 祝日にはさまれた平日 */
   const p=new Date(d); p.setDate(p.getDate()-1);
   const n=new Date(d); n.setDate(n.getDate()+1);
   if(isBaseHoliday(p)&&isBaseHoliday(n)&&d.getDay()!==0) return true;
   return false;
 }
 
+/* =========================================================
+   状態
+========================================================= */
 let S=loadState();
 function loadState(){
+  const def=()=>JSON.parse(JSON.stringify(DEFAULT_STATE));
   try{
     const raw=localStorage.getItem(KEY);
-    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    if(!raw) return def();
     const s=JSON.parse(raw);
-    /* 欠けたキーはデフォルトで補完 */
-    const s2=Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), s);
-    /* 旧バージョンのペット(画像がない種類)は選び直しに */
+    const s2=Object.assign(def(), s);
+    /* --- v2 → v3 移行 --- */
+    s2.patterns=Object.assign(def().patterns, s.patterns||{});
+    if(Array.isArray(s.homework)) s2.homework={a:s.homework, b:[]};
+    else s2.homework=Object.assign({a:[],b:[]}, s.homework||{});
+    s2.hwShow=Object.assign({a:true,b:true}, s.hwShow||{});
+    if(!Array.isArray(s2.album)) s2.album=[];
     ['a','b'].forEach(w=>{
-      let p=s2.pets[w]||{sp:null,fed:0,snacks:0,petName:null};
-      if(p.sp&&!['usagi','dragon','unicorn','lion','griffon','hitsuji'].includes(p.sp)){
-        p={sp:null,fed:0,snacks:0,petName:null};
-        s2.setup=false;
+      const rawP=(s.pets&&s.pets[w])?s.pets[w]:null;
+      let p=Object.assign(newPet(), rawP);
+      if(p.sp&&!SPECIES[p.sp]){ p=newPet(); s2.setup=false; }
+      if(!p.stats||typeof p.stats!=='object') p.stats={chikara:0,hayasa:0,kashiko:0,yasashi:0};
+      STATS.forEach(st=>{ if(typeof p.stats[st.k]!=='number') p.stats[st.k]=0; });
+      if(!rawP||typeof rawP.points!=='number'){
+        /* v2からの移行: そだてた回数ぶんを未使用ポイントとして付与 */
+        p.points=Math.max(0, p.fed - STATS.reduce((a,st)=>a+p.stats[st.k],0));
       }
-      if(p.petName===undefined) p.petName=null;
+      if(!p.since&&p.sp) p.since=s2.start;
       s2.pets[w]=p;
     });
+    s2.ver=3;
     return s2;
-  }catch(e){ return JSON.parse(JSON.stringify(DEFAULT_STATE)); }
+  }catch(e){ return def(); }
 }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
 
 /* ---------- 日付ユーティリティ ---------- */
-function todayStr(){
+function realToday(){
   const d=new Date();
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+function VD(){ if(!S.viewDate){ S.viewDate=realToday(); save(); } return S.viewDate; }
 function parseD(s){ const p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
 function dayDiff(a,b){ return Math.round((parseD(b)-parseD(a))/86400000); }
 function fmtMD(s){ const p=s.split('-'); return (+p[1])+'/'+(+p[2]); }
-const WD=['にち','げつ','か','すい','もく','きん','ど'];
+function fmtLong(s){ const p=s.split('-'); return (+p[1])+'月'+(+p[2])+'日'; }
+const WD=['日','月','火','水','木','金','土'];
+function addDays(s,n){
+  const d=parseD(s); d.setDate(d.getDate()+n);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function inVacation(dateStr){ return dateStr>=S.start && dateStr<=S.end; }
 
-/* ---------- 今日のパターン判定 ---------- */
+/* ---------- 表示する日の切り替え(手動) ---------- */
+function shiftDay(n){
+  S.viewDate=addDays(VD(),n);
+  save(); renderToday(); window.scrollTo(0,0);
+}
+function goToday(){
+  S.viewDate=realToday();
+  save(); renderToday(); window.scrollTo(0,0);
+}
+
+/* ---------- その日のパターン判定 ---------- */
 function patternFor(dateStr){
   const dow=parseD(dateStr).getDay();
-  if(dow===0 || isJPHoliday(dateStr))
-    return {type:'sunday', label:'🚗 しんせきの日(日曜・祝日)', tasks:S.patterns.sunday, bg:'sky-bg'};
+  if(isJPHoliday(dateStr))
+    return {type:'sunday', label:'🎌 祝日', tasks:S.patterns.sunday, bg:'sky-bg'};
+  if(dow===0)
+    return {type:'sunday', label:'🚗 日曜', tasks:S.patterns.sunday, bg:'sky-bg'};
   if(dow===6)
-    return {type:'saturday', label:'🎵 ならいごとの日(土曜)', tasks:S.patterns.saturday, bg:'mint-bg'};
-  return {type:'weekday', label:'☀️ いつもの日(平日)', tasks:S.patterns.weekday, bg:'green-bg'};
+    return {type:'saturday', label:'🎵 土曜', tasks:S.patterns.saturday, bg:'mint-bg'};
+  if(inVacation(dateStr))
+    return {type:'weekday', label:'☀️ 平日', tasks:S.patterns.weekday, bg:'green-bg'};
+  return {type:'school', label:'🎒 学校の日', tasks:S.patterns.school, bg:'lav-bg'};
 }
 
 /* ---------- チェック状態 ---------- */
@@ -344,43 +475,21 @@ function checksFor(dateStr){
   return S.checks[dateStr];
 }
 
-/* =========================================================
-   ペット SVG イラスト
-========================================================= */
-const SPECIES={
-  usagi:  {name:'うさぎ',     egg:'わたげのたまご'},
-  dragon: {name:'ドラゴン',   egg:'くせげのたまご'},
-  unicorn:{name:'ユニコーン', egg:'つののたまご'},
-  lion:   {name:'ライオン',   egg:'しっぽのたまご'},
-  griffon:{name:'グリフォン', egg:'くちばしのたまご'},
-  hitsuji:{name:'ひつじ',     egg:'くものたまご'}
-};
-const STAGE_NAMES=['たまご','あかちゃん','こども','おとな','キラキラ'];
-/* 育成しきい値: 休みの長さから自動計算
-   長い休み(25日以上)=8割、短い休み=9割こなせば最終形態まで育つ */
-function stageTH(){
-  const days=Math.max(1,dayDiff(S.start,S.end)+1);
-  const ratio=days>=25?0.8:0.9;
-  const maxF=Math.max(4,Math.round(days*ratio));
-  const t1=Math.max(1,Math.round(maxF*0.10));
-  const t2=Math.max(t1+1,Math.round(maxF*0.30));
-  const t3=Math.max(t2+1,Math.round(maxF*0.60));
-  const t4=Math.max(t3+1,maxF);
-  return [0,t1,t2,t3,t4];
-}
+/* ---------- 成長 ---------- */
 function stageOf(fed){
-  const T=stageTH();
-  if(fed>=T[4])return 4;
-  if(fed>=T[3])return 3;
-  if(fed>=T[2])return 2;
-  if(fed>=T[1])return 1;
+  for(let i=4;i>=1;i--) if(fed>=STAGE_TH[i]) return i;
   return 0;
 }
 function nextInfo(fed){
   const st=stageOf(fed);
-  if(st>=4) return 'さいこうまで そだったよ!';
-  return 'つぎまで あと'+(stageTH()[st+1]-fed)+'かい';
+  if(st>=4) return 'おやつ1こで パラメータ +1!';
+  return 'つぎまで あと'+(STAGE_TH[st+1]-fed)+'かい';
 }
+function statTotal(p){
+  const base=SPECIES[p.sp].base;
+  return STATS.reduce((a,st)=>a+base[st.k]+p.stats[st.k],0);
+}
+function statVal(p,k){ return SPECIES[p.sp].base[k]+p.stats[k]; }
 
 function petMeta(sp,stage){ return PET_IMG[sp][stage]; }
 function petIMG(sp,stage,h){
@@ -402,66 +511,74 @@ function showTab(t){
 }
 
 /* =========================================================
-   きょう タブ
+   今日 タブ
 ========================================================= */
+let curDaily=[];   /* 表示中の「その日のやること」名の配列 */
 function renderToday(){
   const el=document.getElementById('view-today');
-  const t=todayStr();
+  const t=VD();
+  const rt=realToday();
   const pat=patternFor(t);
   const ev=S.events.find(e=>e.date===t);
   const ck=checksFor(t);
   const d=parseD(t);
-  const dateLabel=fmtMD(t)+'('+WD[d.getDay()]+')';
+  const vac=inVacation(t);
 
-  /* カウントダウン */
-  const vn=S.vacName||'なつやすみ';
-  let cdLabel, cdNum, cdUnit='にち';
-  const toStart=dayDiff(t,S.start);
-  const toEnd=dayDiff(t,S.end);
-  if(toStart>0){ cdLabel=vn+' まで'; cdNum=toStart; }
-  else if(toEnd>0){ cdLabel=vn+'は あと'; cdNum=toEnd; }
-  else if(toEnd===0){ cdLabel='きょうが '+vn; cdNum='さいごの日'; cdUnit=''; }
-  else { cdLabel=vn; cdNum='おつかれさま!'; cdUnit=''; }
+  /* 四すみのかざり(その日の月で切り替え) */
+  const deco=DECO[d.getMonth()+1];
 
-  /* 季節の飾り(開始月で自動切替) */
-  const sm=parseD(S.start).getMonth()+1;
-  let deco=['✨','📚','🌈','🍀'];
-  if(sm===7||sm===8) deco=['🌻','🍉','⛱️','🎐'];
-  else if(sm===12||sm===1||sm===2) deco=['⛄','🎄','🍊','🧤'];
-  else if(sm===3||sm===4) deco=['🌸','🌷','🦋','🍡'];
+  /* カウントダウン(長期休みの期間中だけ) */
+  let cdHtml='';
+  if(vac){
+    const toEnd=dayDiff(t,S.end);
+    if(toEnd>0) cdHtml=`<div class="cd-label">${escH(S.vacName)}は あと</div><div class="cd-num">${toEnd}<small>日</small></div>`;
+    else cdHtml=`<div class="cd-label">${escH(S.vacName)}</div><div class="cd-num" style="font-size:24px;padding:4px 0;">最後の日</div>`;
+  }
 
+  const dateTxt=fmtLong(t)+'('+WD[d.getDay()]+')';
   let html=`
   <div class="countdown">
     <span class="cd-deco d1">${deco[0]}</span><span class="cd-deco d2">${deco[1]}</span>
     <span class="cd-deco d3">${deco[2]}</span><span class="cd-deco d4">${deco[3]}</span>
-    <div class="cd-label">${cdLabel}</div>
-    <div class="cd-num" ${typeof cdNum==='number'?'':'style="font-size:26px;padding:6px 0;"'}>${cdNum}<small>${cdUnit}</small></div>
-    <div class="cd-date">きょうは ${dateLabel}</div>
+    ${cdHtml}
+    <div class="date-nav">
+      <button onclick="shiftDay(-1)" aria-label="前の日">◀</button>
+      <div class="dn-date ${vac?'small':''}">${dateTxt}</div>
+      <button onclick="shiftDay(1)" ${t>=rt?'disabled':''} aria-label="次の日">▶</button>
+    </div>
     <div class="pattern-chip">${pat.label}</div>${ev?`<div class="pattern-chip" style="margin-left:6px;">🎪 ${escH(ev.name)}</div>`:''}
   </div>`;
 
-  /* きょうのやること */
-  html+=`<div class="card"><h2>📝 きょうのやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':'t-green'}">まいにち</span></h2>`;
-  const evTasks=ev?ev.tasks:[];
-  if(pat.tasks.length===0 && evTasks.length===0){
-    html+=`<div class="empty-msg">やることが とうろくされていません<br>(せってい / イベントで追加できます)</div>`;
+  if(t!==rt){
+    const diff=dayDiff(t,rt);
+    html+=`<div class="day-banner" onclick="goToday()">
+      ${diff>0?`${diff}日前の記録を表示中`:`${-diff}日先を表示中`} ・ 今日は ${fmtLong(rt)} → <b>今日に移動 ▶</b></div>`;
   }
-  pat.tasks.forEach(task=>{
+
+  /* その日のやること */
+  const evTasks=ev?ev.tasks:[];
+  curDaily=pat.tasks.concat(evTasks);
+  const listTitle=(t===rt)?'今日':fmtLong(t);
+  html+=`<div class="card"><h2>📝 ${listTitle}のやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':pat.type==='school'?'t-lav':'t-green'}">${pat.label.replace(/^\S+\s/,'')}</span></h2>`;
+  if(curDaily.length===0){
+    html+=`<div class="empty-msg">やることが登録されていません<br>(設定 / イベントから追加できます)</div>`;
+  }
+  pat.tasks.forEach((task,i)=>{
     const done=!!ck.daily[task];
-    html+=`<div class="task ${pat.bg} ${done?'done':''}" onclick="toggleDaily('${esc(task)}')">
+    html+=`<div class="task ${pat.bg} ${done?'done':''}" onclick="toggleDaily(${i})">
       <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
   });
   if(ev){
     html+=`<div style="font-size:13px;font-weight:800;margin:10px 2px 6px;color:#8A79B8;">🎪 ${escH(ev.name)}</div>`;
-    evTasks.forEach(task=>{
+    evTasks.forEach((task,j)=>{
+      const i=pat.tasks.length+j;
       const done=!!ck.daily[task];
-      html+=`<div class="task lav-bg ${done?'done':''}" onclick="toggleDaily('${esc(task)}')">
+      html+=`<div class="task lav-bg ${done?'done':''}" onclick="toggleDaily(${i})">
         <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
     });
   }
-  const allToday=pat.tasks.concat(evTasks);
-  if(allToday.length>0 && allToday.every(x=>ck.daily[x])){
-    html+=`<div class="all-done-badge">🎉 きょうのやること ぜんぶクリア!</div>`;
+  if(curDaily.length>0 && curDaily.every(x=>ck.daily[x])){
+    html+=`<div class="all-done-badge">🎉 やること 全部クリア!</div>`;
   }
   html+=`</div>`;
 
@@ -470,66 +587,72 @@ function renderToday(){
     const list=S.chores[who];
     const ckKey=who==='a'?'ca':'cb';
     const allDone=list.length>0 && list.every(x=>ck[ckKey][x]);
-    const granted=S.granted[t]&&S.granted[t][who];
-    html+=`<div class="card"><h2>${who==='a'?'💙':'💗'} ${escH(S.names[who])}のおてつだい <span class="tag ${who==='a'?'t-sky':'t-pink'}">ペットのおやつ</span></h2>`;
-    list.forEach(task=>{
+    html+=`<div class="card"><h2>${who==='a'?'💙':'💗'} ${escH(S.names[who])}のお手伝い <span class="tag ${who==='a'?'t-sky':'t-pink'}">ペットのおやつ</span></h2>`;
+    if(list.length===0) html+=`<div class="empty-msg">お手伝いが登録されていません</div>`;
+    list.forEach((task,i)=>{
       const done=!!ck[ckKey][task];
-      html+=`<div class="task ${who==='a'?'sky-bg':''} ${done?'done':''}" onclick="toggleChore('${who}','${esc(task)}')">
+      html+=`<div class="task ${who==='a'?'sky-bg':''} ${done?'done':''}" onclick="toggleChore('${who}',${i})">
         <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
     });
     if(allDone){
-      html+=`<div class="all-done-badge">🍪 ぜんぶできた! おやつゲット!<br><span style="font-size:11.5px;">「はこにわ」でペットにあげてね</span></div>`;
-    }else{
-      html+=`<div class="snack-note">ぜんぶ ✓ にすると おやつが もらえるよ</div>`;
+      html+=`<div class="all-done-badge">🍪 全部できた! おやつゲット!<br><span style="font-size:11.5px;">「はこにわ」でペットにあげてね</span></div>`;
+    }else if(list.length>0){
+      html+=`<div class="snack-note">全部 ✓ にすると おやつがもらえます</div>`;
     }
     html+=`</div>`;
   });
 
-  /* 宿題(兄のみ) */
-  if(S.homework.length>0){
-    html+=`<div class="card"><h2>📖 ${escH(S.names.a)}のしゅくだい <span class="tag t-mint">すすみぐあい</span></h2>`;
-    S.homework.forEach((hw,i)=>{
+  /* 宿題(子どもごと・表示ON/OFF) */
+  ['a','b'].forEach(who=>{
+    if(!S.hwShow[who]) return;
+    const list=S.homework[who]||[];
+    if(list.length===0) return;
+    html+=`<div class="card"><h2>📖 ${escH(S.names[who])}の宿題 <span class="tag t-mint">進み具合</span></h2>`;
+    list.forEach((hw,i)=>{
       const pct=hw.total>0?Math.min(100,Math.round(hw.done/hw.total*100)):0;
       html+=`<div class="hw-item">
         <div class="hw-top"><span>${escH(hw.name)}</span><span class="hw-count">${hw.done} / ${hw.total} (${pct}%)</span></div>
         <div class="hw-bar"><div class="hw-fill" style="width:${pct}%"></div></div>
         <div class="hw-btns">
-          <button class="hw-btn minus" onclick="hwStep(${i},-1)">−1</button>
-          <button class="hw-btn plus" onclick="hwStep(${i},1)">＋1 すすんだ!</button>
+          <button class="hw-btn minus" onclick="hwStep('${who}',${i},-1)">−1</button>
+          <button class="hw-btn plus" onclick="hwStep('${who}',${i},1)">＋1 進んだ!</button>
         </div>
-        ${hw.done>=hw.total&&hw.total>0?'<div class="hw-done-msg">🌟 かんりょう! よくがんばりました!</div>':''}
+        ${hw.done>=hw.total&&hw.total>0?'<div class="hw-done-msg">🌟 完了! よくがんばりました!</div>':''}
       </div>`;
     });
     html+=`</div>`;
-  }
+  });
+
   html+=`<div class="section-gap"></div>`;
   el.innerHTML=html;
 }
 
-function toggleDaily(task){
-  task=unesc(task);
-  const ck=checksFor(todayStr());
+function toggleDaily(i){
+  const task=curDaily[i];
+  if(task===undefined) return;
+  const ck=checksFor(VD());
   ck.daily[task]=!ck.daily[task];
   save(); renderToday();
 }
-function toggleChore(who,task){
-  task=unesc(task);
-  const t=todayStr();
+function toggleChore(who,i){
+  const task=S.chores[who][i];
+  if(task===undefined) return;
+  const t=VD();
   const ck=checksFor(t);
   const key=who==='a'?'ca':'cb';
   ck[key][task]=!ck[key][task];
-  /* 全部そろったら おやつ付与(1日1回) */
+  /* その日のぶんが全部そろったら おやつ付与(その日1回だけ・あとから入力してもOK) */
   const all=S.chores[who].length>0 && S.chores[who].every(x=>ck[key][x]);
   if(!S.granted[t]) S.granted[t]={};
   if(all && !S.granted[t][who]){
     S.granted[t][who]=true;
     S.pets[who].snacks++;
-    toast('🍪 '+S.names[who]+'、おやつゲット!');
+    toast('🍪 '+S.names[who]+'、'+(t===realToday()?'':fmtMD(t)+'ぶんの ')+'おやつゲット!');
   }
   save(); renderToday();
 }
-function hwStep(i,d){
-  const hw=S.homework[i];
+function hwStep(who,i,d){
+  const hw=S.homework[who][i];
   hw.done=Math.max(0,Math.min(hw.total,hw.done+d));
   save(); renderToday();
 }
@@ -537,16 +660,21 @@ function hwStep(i,d){
 /* =========================================================
    はこにわ タブ
 ========================================================= */
+function totalEverFed(){
+  let n=S.pets.a.fed+S.pets.b.fed;
+  S.album.forEach(r=>{ n+=r.fed; });
+  return n;
+}
 function renderGarden(){
   const el=document.getElementById('view-garden');
   const pa=S.pets.a, pb=S.pets.b;
-  const totalFed=pa.fed+pb.fed;
-  const flowers=Math.min(12,Math.floor(totalFed/3));
+  const ever=totalEverFed();
+  const flowers=Math.min(18,Math.floor(ever/3));
+  const butterflies=Math.min(4,Math.floor(Math.max(0,ever-54)/12));
 
-  /* 箱庭シーン(SVG) */
   let flowerSVG='';
-  const fx=[24,54,90,130,176,214,252,288,318,150,70,240];
-  const fc=['#FF9EC4','#FFD98E','#B9A3E3','#7ED8B4','#8FC9F0','#FF9EC4','#FFD98E','#B9A3E3','#7ED8B4','#FF9EC4','#8FC9F0','#FFD98E'];
+  const fx=[24,54,90,130,176,214,252,288,318,150,70,240,10,110,196,272,336,44];
+  const fc=['#FF9EC4','#FFD98E','#B9A3E3','#7ED8B4','#8FC9F0','#FF9EC4','#FFD98E','#B9A3E3','#7ED8B4','#FF9EC4','#8FC9F0','#FFD98E','#B9A3E3','#7ED8B4','#FF9EC4','#8FC9F0','#FFD98E','#B9A3E3'];
   for(let i=0;i<flowers;i++){
     const x=fx[i%fx.length], y=178+(i%3)*8;
     flowerSVG+=`<g transform="translate(${x},${y})">
@@ -554,10 +682,21 @@ function renderGarden(){
       <circle cx="0" cy="-3" r="4.5" fill="${fc[i%fc.length]}"/>
       <circle cx="0" cy="-3" r="1.8" fill="#FFF6E0"/></g>`;
   }
+  let bfSVG='';
+  const bfp=[[40,96],[300,74],[160,64],[228,104]];
+  for(let i=0;i<butterflies;i++){
+    const [x,y]=bfp[i];
+    bfSVG+=`<g class="bfly" style="animation-delay:${i*1.3}s" transform="translate(${x},${y})">
+      <ellipse cx="-3.5" cy="0" rx="3.6" ry="4.6" fill="#FFB7D5" opacity=".95"/>
+      <ellipse cx="3.5" cy="0" rx="3.6" ry="4.6" fill="#C9B6F0" opacity=".95"/>
+      <line x1="0" y1="-3" x2="0" y2="3" stroke="#8A6E7C" stroke-width="1.3"/></g>`;
+  }
+
   const petAW=pa.sp?petImgInScene(pa.sp,stageOf(pa.fed),92):'';
   const petBW=pb.sp?petImgInScene(pb.sp,stageOf(pb.fed),254):'';
 
-  const scene=`<svg class="garden-scene" viewBox="0 0 346 210" xmlns="http://www.w3.org/2000/svg">
+  const scene=`<div class="scene-wrap" id="scene-wrap">
+  <svg class="garden-scene" viewBox="0 0 346 210" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#CDE9FB"/><stop offset="1" stop-color="#F6EFFB"/>
@@ -573,10 +712,10 @@ function renderGarden(){
     <ellipse cx="94" cy="44" rx="20" ry="9" fill="#FFF" opacity=".9"/>
     <ellipse cx="180" cy="24" rx="22" ry="9" fill="#FFF" opacity=".75"/>
     <path d="M0,158 Q86,140 173,152 T346,150 L346,210 L0,210 Z" fill="url(#grdG)"/>
-    ${flowerSVG}
+    ${flowerSVG}${bfSVG}
     <g id="pet-a-g" class="${stageOf(pa.fed)===0?'pet-egg':'pet-idle'}">${petAW}</g>
     <g id="pet-b-g" class="${stageOf(pb.fed)===0?'pet-egg':'pet-idle'}">${petBW}</g>
-  </svg>`;
+  </svg></div>`;
 
   function panel(who){
     const p=S.pets[who];
@@ -584,7 +723,7 @@ function renderGarden(){
     const st=stageOf(p.fed);
     const label=st===0?SPECIES[p.sp].egg:(p.petName||'なまえを つけてね');
     const nameBtn=(st>0&&!p.petName)?`<button class="btn-sub" style="margin-top:6px;padding:7px 0;" onclick="openNaming('${who}',false)">✏️ なまえをつける</button>`:'';
-    return `<div class="pet-col ${who}" style="position:relative;" id="panel-${who}">
+    return `<div class="pet-col ${who}" id="panel-${who}">
       <div class="p-name">${escH(S.names[who])}の<br>${escH(label)}</div>
       <div class="p-stage">${STAGE_NAMES[st]} 🍪×${p.fed}</div>
       <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">
@@ -595,47 +734,96 @@ function renderGarden(){
     </div>`;
   }
 
+  function statBox(who){
+    const p=S.pets[who];
+    if(!p.sp||stageOf(p.fed)===0) return '';
+    let rows='';
+    STATS.forEach(st=>{
+      const v=statVal(p,st.k);
+      const w=Math.min(100,Math.round(v/40*100));
+      rows+=`<div class="stat-row">
+        <div class="st-name">${st.icon} ${st.name}</div>
+        <div class="st-bar"><div class="st-fill k-${st.k}" style="width:${w}%"></div></div>
+        <div class="st-val">${v}</div>
+        <button class="st-plus" ${p.points>0?'':'disabled'} onclick="raiseStat('${who}','${st.k}')">＋</button>
+      </div>`;
+    });
+    return `<div class="stat-card ${who}">
+      <div class="stat-head">
+        <span>${escH(p.petName||SPECIES[p.sp].name)}の つよさ</span>
+        <span class="st-total">そうごう ${statTotal(p)}</span>
+      </div>
+      ${rows}
+      <div class="st-pt ${p.points>0?'on':''}">${p.points>0?'のばせるポイント ×'+p.points+' 🎁':'おやつをあげると ポイントが もらえるよ'}</div>
+    </div>`;
+  }
+
   el.innerHTML=`
   <div class="card garden-card">
     <h2>🐾 ふたりの はこにわ</h2>
     ${scene}
     <div class="pet-panel">${panel('a')}${panel('b')}</div>
-    <div class="garden-note">おてつだいを ぜんぶできた日は おやつがもらえるよ🍪<br>ふたりの がんばりの合計で お花がふえていくよ🌸(いま ${flowers}こ)</div>
+    <div class="garden-note">おてつだいを ぜんぶできた日は おやつがもらえるよ🍪<br>
+      これまでの がんばりの合計で お花がふえていくよ🌸(いま ${flowers}こ)${butterflies>0?'<br>ちょうちょも あそびに きたよ🦋':''}</div>
   </div>
+  ${statBox('a')}${statBox('b')}
+  ${renderAlbum()}
   <div class="section-gap"></div>`;
 }
+
 /* シーン内にペットを配置(cx=中心X、地面ライン基準で下ぞろえ) */
+const STAGE_H=[58,66,78,90,98];
 function petImgInScene(sp,stage,cx){
   const m=petMeta(sp,stage);
-  const h=[58,66,78,90,98][stage];
+  const h=STAGE_H[stage];
   const w=h*m.w/m.h;
   const y=162-h;
   return `<image href="${m.s}" x="${(cx-w/2).toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}"/>`;
+}
+/* ペットの頭上の位置(シーン内の%) */
+function petHeadPos(who){
+  const p=S.pets[who];
+  const cx=who==='a'?92:254;
+  const y=162-STAGE_H[stageOf(p.fed)];
+  return {left:(cx/346*100), top:(y/210*100)};
+}
+function spawnHearts(who){
+  const wrap=document.getElementById('scene-wrap');
+  if(!wrap) return;
+  const pos=petHeadPos(who);
+  ['💗','💛','⭐'].forEach((ch,i)=>{
+    const h=document.createElement('span');
+    h.className='heart-float';
+    h.textContent=ch;
+    h.style.left='calc('+pos.left+'% + '+((i-1)*15)+'px)';
+    h.style.top='calc('+pos.top+'% - '+(4+i*3)+'px)';
+    h.style.animationDelay=(i*0.12)+'s';
+    wrap.appendChild(h);
+    setTimeout(()=>h.remove(),1500);
+  });
+}
+
+function raiseStat(who,k){
+  const p=S.pets[who];
+  if(p.points<=0) return;
+  p.points--; p.stats[k]++;
+  save(); renderGarden();
+  const nm=STATS.find(s=>s.k===k).name;
+  toast('✨ '+nm+'が あがった! ('+statVal(p,k)+')');
 }
 
 function feed(who){
   const p=S.pets[who];
   if(p.snacks<=0) return;
   const before=stageOf(p.fed);
-  p.snacks--; p.fed++;
+  p.snacks--; p.fed++; p.points++;
+  if(!p.since) p.since=realToday();
   save();
   const after=stageOf(p.fed);
   renderGarden();
-  /* アニメーション */
   const g=document.getElementById('pet-'+who+'-g');
   if(g){ g.classList.add('yay'); setTimeout(()=>g.classList.remove('yay'),950); }
-  const panel=document.getElementById('panel-'+who);
-  if(panel){
-    for(let i=0;i<3;i++){
-      const h=document.createElement('span');
-      h.className='heart-float';
-      h.textContent=['💗','💛','⭐'][i];
-      h.style.left=(30+i*22)+'%';
-      h.style.top='-6px';
-      panel.appendChild(h);
-      setTimeout(()=>h.remove(),1200);
-    }
-  }
+  spawnHearts(who);
   if(before===0&&after>=1){
     setTimeout(()=>openNaming(who,true),750);
   }else if(after>before){
@@ -644,8 +832,46 @@ function feed(who){
   }else if(after===0){
     toast('こつん… たまごが うごいた!');
   }else{
-    toast('もぐもぐ… '+(p.petName||'ペット')+'は うれしそう!');
+    toast('もぐもぐ… ポイント+1! ('+p.points+'こ)');
   }
+}
+
+/* ---------- そつぎょうアルバム ---------- */
+function renderAlbum(){
+  if(S.album.length===0) return '';
+  let items='';
+  [...S.album].reverse().forEach((r,ri)=>{
+    const idx=S.album.length-1-ri;
+    const days=r.since&&r.until?dayDiff(r.since,r.until)+1:null;
+    let statsHtml='';
+    STATS.forEach(st=>{
+      const v=(SPECIES[r.sp].base[st.k]||0)+((r.stats&&r.stats[st.k])||0);
+      statsHtml+=`<span class="al-st">${st.icon}${v}</span>`;
+    });
+    items+=`<div class="album-item">
+      <div class="al-img">${petIMG(r.sp,r.stage,72)}</div>
+      <div class="al-body">
+        <div class="al-name">${escH(r.petName||SPECIES[r.sp].name)}</div>
+        <div class="al-sub">${escH(S.names[r.who]||'')}の ${SPECIES[r.sp].name}・${STAGE_NAMES[r.stage]}</div>
+        <div class="al-days">いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
+        <div class="al-sub">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}・🍪×${r.fed}</div>
+        <div class="al-stats">${statsHtml}<span class="al-st total">そうごう ${(function(){let n=0;STATS.forEach(st=>{n+=(SPECIES[r.sp].base[st.k]||0)+((r.stats&&r.stats[st.k])||0);});return n;})()}</span></div>
+      </div>
+      <button class="ev-del" onclick="delAlbum(${idx})">✕</button>
+    </div>`;
+  });
+  return `<div class="card">
+    <h2>🏅 そつぎょうアルバム <span class="tag t-lav">${S.album.length}ひき</span></h2>
+    <div class="set-note">たまごから そだて直したときに、それまでの子が ここに のこります。</div>
+    ${items}
+  </div>`;
+}
+function delAlbum(i){
+  const r=S.album[i];
+  if(!r) return;
+  if(!confirm('アルバムから「'+(r.petName||SPECIES[r.sp].name)+'」を削除しますか?\nもとに戻せません。')) return;
+  S.album.splice(i,1);
+  save(); renderGarden();
 }
 
 /* ---------- 名付け ---------- */
@@ -658,7 +884,7 @@ function openNaming(who,isBirth){
   el.innerHTML=`<div class="setup-in">
     ${isBirth?'<h1>🎉 おめでとう!</h1><div class="sub">あかちゃんが うまれたよ。<br>なまえを つけてあげてね。</div>':'<h1>✏️ なまえをつけよう</h1><div class="sub">'+escH(S.names[who])+'の ペットの なまえを きめてね</div>'}
     <div style="background:#fff;border-radius:20px;padding:14px 20px;display:inline-block;box-shadow:0 4px 12px rgba(160,140,180,.15);">${petIMG(p.sp,Math.max(1,stageOf(p.fed)),110)}</div>
-    <div class="sub" style="margin-top:8px;">${SPECIES[p.sp].egg}から あかちゃんが うまれたよ!</div>
+    <div class="sub" style="margin-top:8px;">${SPECIES[p.sp].egg}から うまれた ${SPECIES[p.sp].name}だよ!</div>
     <div class="form-row" style="text-align:left;margin-top:10px;"><label>なまえ(10文字まで)</label><input type="text" id="pet-name-input" maxlength="10" value="${escA(p.petName||'')}" placeholder="れい:ももちゃん"></div>
     <button class="btn-main" onclick="saveName()">✨ けってい</button>
   </div>`;
@@ -676,22 +902,25 @@ function saveName(){
 /* =========================================================
    イベント タブ
 ========================================================= */
+let evEditing=null;
 function renderEvents(){
   const el=document.getElementById('view-events');
-  const t=todayStr();
-  const evs=[...S.events].sort((a,b)=>a.date<b.date?-1:1);
+  const t=VD();
+  /* 日にちが過ぎたイベントは一覧から自動で消える */
+  const evs=S.events.filter(e=>e.date>=t).sort((a,b)=>a.date<b.date?-1:1);
+  const pastCount=S.events.length-evs.length;
   let list='';
   if(evs.length===0){
-    list=`<div class="empty-msg">まだイベントがありません。<br>下のフォームから追加できます 🎪</div>`;
+    list=`<div class="empty-msg">これからのイベントはありません。<br>下のフォームから追加できます 🎪</div>`;
   }else{
     evs.forEach(ev=>{
       const idx=S.events.indexOf(ev);
-      const past=ev.date<t;
-      list+=`<div class="ev-item ${past?'past':''}">
+      const dd=dayDiff(t,ev.date);
+      list+=`<div class="ev-item">
         <div class="ev-date">${fmtMD(ev.date)}<br>(${WD[parseD(ev.date).getDay()]})</div>
         <div class="ev-body">
-          <div class="ev-name">${escH(ev.name)}</div>
-          <div class="ev-tasks">${ev.tasks.map(escH).join(' / ')||'(タスクなし)'}</div>
+          <div class="ev-name">${escH(ev.name)}${dd===0?' <span style="color:#C97A9C;">今日!</span>':dd<=7?` <span style="font-weight:600;color:#B08CA0;">あと${dd}日</span>`:''}</div>
+          <div class="ev-tasks">${ev.tasks.map(escH).join(' / ')||'(やることなし)'}</div>
         </div>
         <button class="ev-del" style="background:#EAF3FA;color:#5E8FBE;" onclick="editEvent(${idx})">✏️</button>
         <button class="ev-del" onclick="delEvent(${idx})">✕</button>
@@ -701,19 +930,28 @@ function renderEvents(){
   const editing=(evEditing!==null&&S.events[evEditing])?S.events[evEditing]:null;
   el.innerHTML=`
   <div class="card">
-    <h2>🎪 イベントいちらん <span class="tag t-lav">当日リストに追加</span></h2>
-    <div class="set-note">登録した日は、その日の「きょうのやること」にイベントのやることが追加されます。日付と名前だけ先に登録して、あとから✏️で「やること」を追記することもできます。</div>
+    <h2>🎪 イベント一覧 <span class="tag t-lav">当日リストに追加</span></h2>
+    <div class="set-note">登録した日は、その日の「やること」にイベントのやることが追加されます。日付と名前だけ先に登録して、あとから✏️で追記もできます。<br>過ぎた日のイベントは一覧から自動で消えます${pastCount>0?`(いま ${pastCount}件を非表示中・その日に戻れば表示されます)`:''}。</div>
     ${list}
+    ${pastCount>0?`<button class="btn-sub" onclick="purgePast()">🗑 過ぎたイベント ${pastCount}件を完全に削除する</button>`:''}
   </div>
   <div class="card" id="ev-form-card">
     <h2>${editing?'✏️ イベントを編集('+fmtMD(editing.date)+' '+escH(editing.name)+')':'➕ イベントを追加'}</h2>
-    <div class="form-row"><label>日づけ</label><input type="date" id="ev-date" min="${S.start}" max="${S.end}" value="${editing?editing.date:''}"></div>
+    <div class="form-row"><label>日付</label><input type="date" id="ev-date" value="${editing?editing.date:''}"></div>
     <div class="form-row"><label>イベント名(例:花火大会、おばあちゃんち)</label><input type="text" id="ev-name" placeholder="イベントの名前" value="${editing?escA(editing.name):''}"></div>
-    <div class="form-row"><label>その日のやること(1行に1つ・空でもOK)</label><textarea id="ev-tasks" placeholder="もちものをじゅんび&#10;すいとうをもつ&#10;はやめにおふろ">${editing?escH(editing.tasks.join('\n')):''}</textarea></div>
-    <button class="btn-main" onclick="addEvent()">${editing?'💾 変更をほぞんする':'🎪 イベントをとうろく'}</button>
-    ${editing?'<button class="btn-sub" onclick="cancelEdit()">編集をやめる(もとにもどす)</button>':''}
+    <div class="form-row"><label>その日のやること(1行に1つ・空でもOK)</label><textarea id="ev-tasks" placeholder="持ち物を準備&#10;水筒を持つ&#10;早めにお風呂">${editing?escH(editing.tasks.join('\n')):''}</textarea></div>
+    <button class="btn-main" onclick="addEvent()">${editing?'💾 変更を保存する':'🎪 イベントを登録'}</button>
+    ${editing?'<button class="btn-sub" onclick="cancelEdit()">編集をやめる(もとに戻す)</button>':''}
   </div>
   <div class="section-gap"></div>`;
+}
+function purgePast(){
+  const t=VD();
+  const n=S.events.filter(e=>e.date<t).length;
+  if(!confirm('過ぎたイベント '+n+'件を完全に削除しますか?')) return;
+  S.events=S.events.filter(e=>e.date>=t);
+  evEditing=null;
+  save(); renderEvents();
 }
 function editEvent(i){
   evEditing=i;
@@ -721,17 +959,13 @@ function editEvent(i){
   const f=document.getElementById('ev-form-card');
   if(f) f.scrollIntoView({behavior:'smooth'});
 }
-function cancelEdit(){
-  evEditing=null;
-  renderEvents();
-}
-let evEditing=null;
+function cancelEdit(){ evEditing=null; renderEvents(); }
 function addEvent(){
   const date=document.getElementById('ev-date').value;
   const name=document.getElementById('ev-name').value.trim();
   const tasks=document.getElementById('ev-tasks').value.split('\n').map(x=>x.trim()).filter(x=>x);
-  if(!date){ toast('日づけを えらんでください'); return; }
-  if(!name){ toast('イベント名を 入れてください'); return; }
+  if(!date){ toast('日付を選んでください'); return; }
+  if(!name){ toast('イベント名を入れてください'); return; }
   const target=(evEditing!==null&&S.events[evEditing])?S.events[evEditing]:null;
   const dup=S.events.find(e=>e.date===date&&e!==target);
   if(dup){
@@ -743,7 +977,7 @@ function addEvent(){
     toast('✏️ 「'+name+'」を更新しました');
   }else{
     S.events.push({date,name,tasks});
-    toast('🎪 「'+name+'」をとうろくしました');
+    toast('🎪 「'+name+'」を登録しました');
   }
   evEditing=null;
   save(); renderEvents();
@@ -757,76 +991,141 @@ function delEvent(i){
 }
 
 /* =========================================================
-   せってい タブ
+   設定 タブ
 ========================================================= */
 function renderSettings(){
   const el=document.getElementById('view-settings');
-  let hwRows='';
-  S.homework.forEach((hw,i)=>{
-    hwRows+=`<div class="hw-set-row">
-      <input type="text" class="hw-name" id="hw-name-${i}" value="${escA(hw.name)}" placeholder="しゅくだい名">
-      <input type="number" class="hw-total" id="hw-total-${i}" value="${hw.total}" min="1" placeholder="数">
-      <button onclick="delHw(${i})">✕</button>
+  function hwBlock(who){
+    let rows='';
+    (S.homework[who]||[]).forEach((hw,i)=>{
+      rows+=`<div class="hw-set-row">
+        <input type="text" class="hw-name" id="hw-${who}-name-${i}" value="${escA(hw.name)}" placeholder="宿題名">
+        <input type="number" class="hw-total" id="hw-${who}-total-${i}" value="${hw.total}" min="1" placeholder="数">
+        <button onclick="delHw('${who}',${i})">✕</button>
+      </div>`;
+    });
+    return `<div class="hw-block">
+      <label class="switch-row">
+        <span>${who==='a'?'💙':'💗'} ${escH(S.names[who])}の宿題を今日のリストに表示する</span>
+        <input type="checkbox" id="hw-show-${who}" ${S.hwShow[who]?'checked':''} onchange="toggleHwShow('${who}')">
+      </label>
+      ${rows||'<div class="empty-msg" style="padding:6px 0;">登録なし</div>'}
+      <button class="btn-sub" style="margin-top:4px;" onclick="addHw('${who}')">＋ ${escH(S.names[who])}の宿題を追加</button>
     </div>`;
-  });
+  }
+  let decoRows='';
+  for(let m=1;m<=12;m++){
+    decoRows+=`<div class="deco-row"><span class="deco-m">${m}月</span><span class="deco-e">${DECO[m].join(' ')}</span></div>`;
+  }
   el.innerHTML=`
   <div class="card">
-    <h2>👦👧 なまえ</h2>
-    <div class="form-row"><label>1人目(宿題バーはこの子に表示)</label><input type="text" id="set-name-a" value="${escA(S.names.a)}"></div>
+    <h2>👦👧 名前</h2>
+    <div class="form-row"><label>1人目</label><input type="text" id="set-name-a" value="${escA(S.names.a)}"></div>
     <div class="form-row"><label>2人目</label><input type="text" id="set-name-b" value="${escA(S.names.b)}"></div>
   </div>
   <div class="card">
-    <h2>📅 おやすみの期間</h2>
-    <div class="form-row"><label>おやすみの名前(例:なつやすみ、ふゆやすみ、はるやすみ)</label><input type="text" id="set-vacname" value="${escA(S.vacName||'なつやすみ')}"></div>
+    <h2>📅 長期休みの期間</h2>
+    <div class="set-note">この期間の平日は「☀️ 平日」パターン、期間外の平日は「🎒 学校の日」パターンになります。土曜・日曜・祝日は一年中おなじです。<br>期間中だけ、上部にカウントダウンが表示されます。</div>
+    <div class="form-row"><label>休みの名前(例:なつやすみ、ふゆやすみ、はるやすみ)</label><input type="text" id="set-vacname" value="${escA(S.vacName||'なつやすみ')}"></div>
     <div class="form-row"><label>はじまり</label><input type="date" id="set-start" value="${S.start}"></div>
     <div class="form-row"><label>おわり(カウントダウンの目標日)</label><input type="date" id="set-end" value="${S.end}"></div>
   </div>
   <div class="card">
-    <h2>📝 まいにちのやること</h2>
-    <div class="set-note">1行に1つずつ書いてください。曜日で自動的に切り替わります。</div>
-    <div class="form-row"><label>☀️ 平日</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
-    <div class="form-row"><label>🎵 土曜(ならいごとの日)</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
-    <div class="form-row"><label>🚗 日曜・祝日</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
+    <h2>📝 毎日のやること</h2>
+    <div class="set-note">1行に1つずつ。曜日と期間で自動的に切り替わります。</div>
+    <div class="form-row"><label>🎒 学校の日(休みの期間外の平日)</label><textarea id="set-school">${escH(S.patterns.school.join('\n'))}</textarea></div>
+    <div class="form-row"><label>☀️ 平日(休みの期間中)</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
+    <div class="form-row"><label>🎵 土曜(習い事の日)</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
+    <div class="form-row"><label>🚗 日曜・🎌 祝日</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
   </div>
   <div class="card">
-    <h2>🧺 おてつだい(ペットのおやつ)</h2>
+    <h2>🧺 お手伝い(ペットのおやつ)</h2>
     <div class="set-note">全部できた日に、その子のペットへのおやつが1つもらえます。</div>
     <div class="form-row"><label>💙 ${escH(S.names.a)}</label><textarea id="set-chores-a">${escH(S.chores.a.join('\n'))}</textarea></div>
-    <div class="form-row"><label>💜 ${escH(S.names.b)}</label><textarea id="set-chores-b">${escH(S.chores.b.join('\n'))}</textarea></div>
+    <div class="form-row"><label>💗 ${escH(S.names.b)}</label><textarea id="set-chores-b">${escH(S.chores.b.join('\n'))}</textarea></div>
   </div>
   <div class="card">
-    <h2>📖 しゅくだい(${escH(S.names.a)}用)</h2>
-    <div class="set-note">名前と、ぜんぶの数(ページ数・枚数など)を入れてください。</div>
-    ${hwRows}
-    <button class="btn-sub" onclick="addHw()">＋ しゅくだいを追加</button>
+    <h2>📖 宿題</h2>
+    <div class="set-note">名前と、全部の数(ページ数・枚数など)を入れてください。長期休みだけ表示したいときは、スイッチでOFFにできます。</div>
+    ${hwBlock('a')}${hwBlock('b')}
   </div>
-  <button class="btn-main" onclick="saveSettings()">💾 せっていをほぞんする</button>
-  <button class="btn-sub" onclick="newVacation()">🔄 あたらしい休みをはじめる(記録リセット)</button>
-  ${S.pets.a.sp&&stageOf(S.pets.a.fed)>0?`<button class="btn-sub" onclick="openNaming('a',false)">✏️ ${escH(S.names.a)}のペットのなまえをかえる</button>`:''}
-  ${S.pets.b.sp&&stageOf(S.pets.b.fed)>0?`<button class="btn-sub" onclick="openNaming('b',false)">✏️ ${escH(S.names.b)}のペットのなまえをかえる</button>`:''}
-  <button class="btn-sub" onclick="rechoosePets()">🐾 ペットをえらびなおす(成長もリセット)</button>
-  <button class="btn-sub" style="opacity:.45;font-size:12px;" onclick="testSnack()">🍪 おためしおやつ+10(おうちのひと確認用)</button>
+  <div class="card">
+    <h2>🐾 ペットの管理</h2>
+    <div class="set-note">ひとりずつ選べます。そのまま育て続けても、たまごから育て直してもOK。<br>育て直しても、もう一人のペットと、持っているおやつの数はそのままです。それまでの子は「そつぎょうアルバム」に残ります。</div>
+    ${petAdminRow('a')}${petAdminRow('b')}
+  </div>
+  <div class="card">
+    <h2>🗓 四すみのかざり(月ごと)</h2>
+    <div class="set-note">今日タブの上部、四すみの絵文字は表示中の日付の「月」で自動的に変わります。</div>
+    ${decoRows}
+  </div>
+  <button class="btn-main" onclick="saveSettings()">💾 設定を保存する</button>
+  <button class="btn-sub" onclick="newVacation()">🔄 新しい休みをはじめる(記録リセット)</button>
+  <button class="btn-sub" style="opacity:.45;font-size:12px;" onclick="testSnack()">🍪 お試しおやつ+10(動作確認用)</button>
   <div class="section-gap"></div>`;
 }
+function toggleHwShow(who){
+  saveSettingsSilent();
+  S.hwShow[who]=document.getElementById('hw-show-'+who).checked;
+  save();
+  toast(S.hwShow[who]?'📖 今日のリストに表示します':'📖 今日のリストから隠します');
+}
+function petAdminRow(who){
+  const p=S.pets[who];
+  const icon=who==='a'?'💙':'💗';
+  const nm=escH(S.names[who]);
+  if(!p.sp){
+    return `<div class="form-row"><label>${icon} ${nm}</label>
+      <button class="btn-sub" style="margin-top:0;" onclick="rechoosePet('${who}')">🥚 たまごを選ぶ</button></div>`;
+  }
+  const st=stageOf(p.fed);
+  const label=st===0?SPECIES[p.sp].egg:(p.petName||SPECIES[p.sp].name);
+  return `<div class="form-row"><label>${icon} ${nm} — ${escH(label)}(${STAGE_NAMES[st]}・🍪×${p.fed}${st>0?'・そうごう'+statTotal(p):''})</label>
+    ${st>0?`<button class="btn-sub" style="margin-top:0;" onclick="openNaming('${who}',false)">✏️ 名前を変える</button>`:''}
+    <button class="btn-sub" ${st>0?'':'style="margin-top:0;"'} onclick="rechoosePet('${who}')">🥚 たまごから育て直す(この子だけ)</button>
+  </div>`;
+}
+function rechoosePet(who){
+  const p=S.pets[who];
+  if(p.sp){
+    const nm=p.petName||SPECIES[p.sp].name;
+    const st=stageOf(p.fed);
+    const willArchive=(p.fed>0);
+    if(!confirm(S.names[who]+'の「'+nm+'」を たまごから育て直しますか?\n\n'+
+      (willArchive?'・ この子は「そつぎょうアルバム」に残ります\n':'')+
+      '・ 育てた回数(🍪'+p.fed+'回)とパラメータは 0からになります\n'+
+      '・ もう一人('+S.names[who==='a'?'b':'a']+')のペットは そのままです\n'+
+      '・ 持っているおやつ('+p.snacks+'こ)は そのまま使えます\n'+
+      '・ 花畑はこれまでの累計で数えるので 減りません')) return;
+    if(willArchive){
+      S.album.push({
+        who, sp:p.sp, petName:p.petName, fed:p.fed, stage:st,
+        stats:Object.assign({},p.stats), points:p.points,
+        since:p.since||S.start, until:realToday()
+      });
+    }
+  }
+  const snacks=p.snacks;
+  S.pets[who]=newPet();
+  S.pets[who].snacks=snacks;
+  save();
+  startSetup(who);
+}
 function newVacation(){
-  if(!confirm('あたらしい休みを始めますか?\n\nリセットされるもの:\n・毎日のチェック記録\n・イベント\n・宿題の進みぐあい(0に戻る)\n・おやつ獲得の記録\n\n残るもの:\n・タスクのリスト内容、名前などの設定')) return;
+  if(!confirm('新しい休みを始めますか?\n\nリセットされるもの:\n・毎日のチェック記録\n・イベント\n・宿題の進み具合(0に戻る)\n・おやつ獲得の記録\n\n残るもの:\n・タスクのリスト内容、名前などの設定\n・ペット、そつぎょうアルバム、花畑')) return;
   S.checks={};
   S.granted={};
   S.events=[];
-  S.homework.forEach(hw=>hw.done=0);
-  ['a','b'].forEach(w=>S.pets[w].snacks=0);
-  const keep=confirm('ペットの成長は引き継ぎますか?\n\nOK = そだったまま引き継ぐ\nキャンセル = たまごから育て直す(選び直し)');
-  if(!keep){
-    S.pets={a:{sp:null,fed:0,snacks:0,petName:null}, b:{sp:null,fed:0,snacks:0,petName:null}};
-    S.setup=false;
-  }
+  ['a','b'].forEach(w=>{ (S.homework[w]||[]).forEach(hw=>hw.done=0); S.pets[w].snacks=0; });
+  S.viewDate=realToday();
   save();
   toast('🔄 リセットしました。名前と期間を設定して保存してね');
-  if(!S.setup){ startSetup(); }
   renderSettings();
 }
 function linesOf(id){
-  return document.getElementById(id).value.split('\n').map(x=>x.trim()).filter(x=>x);
+  const el=document.getElementById(id);
+  if(!el) return [];
+  return el.value.split('\n').map(x=>x.trim()).filter(x=>x);
 }
 function saveSettings(){
   const na=document.getElementById('set-name-a').value.trim();
@@ -839,65 +1138,65 @@ function saveSettings(){
   const en=document.getElementById('set-end').value;
   if(st) S.start=st;
   if(en) S.end=en;
-  if(parseD(S.end)<parseD(S.start)){ toast('おわりの日が はじまりより前です'); return; }
+  if(parseD(S.end)<parseD(S.start)){ toast('おわりの日がはじまりより前です'); return; }
+  S.patterns.school=linesOf('set-school');
   S.patterns.weekday=linesOf('set-weekday');
   S.patterns.saturday=linesOf('set-saturday');
   S.patterns.sunday=linesOf('set-sunday');
   S.chores.a=linesOf('set-chores-a');
   S.chores.b=linesOf('set-chores-b');
-  /* 宿題 */
-  const newHw=[];
-  S.homework.forEach((hw,i)=>{
-    const nameEl=document.getElementById('hw-name-'+i);
-    const totalEl=document.getElementById('hw-total-'+i);
-    if(!nameEl) return;
-    const name=nameEl.value.trim();
-    const total=Math.max(1,parseInt(totalEl.value)||1);
-    if(name) newHw.push({name,total,done:Math.min(hw.done,total)});
+  ['a','b'].forEach(who=>{
+    const newHw=[];
+    (S.homework[who]||[]).forEach((hw,i)=>{
+      const nameEl=document.getElementById('hw-'+who+'-name-'+i);
+      const totalEl=document.getElementById('hw-'+who+'-total-'+i);
+      if(!nameEl) return;
+      const name=nameEl.value.trim();
+      const total=Math.max(1,parseInt(totalEl.value)||1);
+      if(name) newHw.push({name,total,done:Math.min(hw.done,total)});
+    });
+    S.homework[who]=newHw;
+    const sw=document.getElementById('hw-show-'+who);
+    if(sw) S.hwShow[who]=sw.checked;
   });
-  S.homework=newHw;
   save();
-  toast('💾 ほぞんしました');
+  toast('💾 保存しました');
   renderSettings();
 }
-function addHw(){
+function addHw(who){
   saveSettingsSilent();
-  S.homework.push({name:'',total:10,done:0});
+  if(!S.homework[who]) S.homework[who]=[];
+  S.homework[who].push({name:'',total:10,done:0});
   renderSettings();
 }
-function delHw(i){
+function delHw(who,i){
   saveSettingsSilent();
-  S.homework.splice(i,1);
+  S.homework[who].splice(i,1);
   save(); renderSettings();
 }
 function saveSettingsSilent(){
-  /* 追加/削除時に入力途中の宿題欄を保持 */
-  S.homework.forEach((hw,i)=>{
-    const nameEl=document.getElementById('hw-name-'+i);
-    const totalEl=document.getElementById('hw-total-'+i);
-    if(nameEl){ hw.name=nameEl.value; hw.total=Math.max(1,parseInt(totalEl.value)||1); }
+  ['a','b'].forEach(who=>{
+    (S.homework[who]||[]).forEach((hw,i)=>{
+      const nameEl=document.getElementById('hw-'+who+'-name-'+i);
+      const totalEl=document.getElementById('hw-'+who+'-total-'+i);
+      if(nameEl){ hw.name=nameEl.value; hw.total=Math.max(1,parseInt(totalEl.value)||1); }
+    });
   });
 }
 function testSnack(){
-  if(!confirm('確認用に、選ばれている全ペットへおやつを10こずつ追加します。\n(確認が終わったら「あたらしい休みをはじめる」でリセットできます)')) return;
+  if(!confirm('確認用に、選ばれている全ペットへおやつを10こずつ追加します。')) return;
   ['a','b'].forEach(w=>{ if(S.pets[w].sp) S.pets[w].snacks+=10; });
   save();
-  toast('🍪 おためしおやつを追加しました');
-}
-function rechoosePets(){
-  if(!confirm('ペットの種類と成長(おやつ回数)をリセットして、選び直しますか?')) return;
-  S.pets={a:{sp:null,fed:0,snacks:0,petName:null}, b:{sp:null,fed:0,snacks:0,petName:null}};
-  S.setup=false;
-  save();
-  startSetup();
+  toast('🍪 お試しおやつを追加しました');
 }
 
 /* =========================================================
    初回セットアップ(ペット選び)
 ========================================================= */
-let setupStep='a', setupSel=null;
-function startSetup(){
-  setupStep='a'; setupSel=null;
+let setupStep='a', setupSel=null, setupOnly=null;
+function startSetup(only){
+  setupOnly=(only==='a'||only==='b')?only:null;
+  setupStep=setupOnly||'a'; setupSel=null;
   document.getElementById('setup').classList.remove('hidden');
   renderSetup();
 }
@@ -911,24 +1210,34 @@ function renderSetup(){
       <div class="sp-name">${SPECIES[key].egg}</div>
     </div>`;
   });
+  const sel=setupSel?SPECIES[setupSel]:null;
+  let hint='';
+  if(sel){
+    hint=`<div class="sp-hint">${sel.egg} … <b>${sel.name}</b> が うまれるよ<br>`+
+      STATS.map(st=>`${st.icon}${st.name} ${sel.base[st.k]}`).join('　')+`</div>`;
+  }
   el.innerHTML=`<div class="setup-in">
     <h1>🥚 ${escH(S.names[who])}のたまごをえらぼう!</h1>
-    <div class="sub">${who==='a'?'1人目':'2人目'}のたまごです。おやつをあげると…なにが うまれるかな?</div>
+    <div class="sub">${setupOnly?'あたらしい たまごです。':(who==='a'?'1人目':'2人目')+'のたまごです。'}おやつをあげると…なにが うまれるかな?</div>
     <div class="sp-grid">${grid}</div>
-    <button class="btn-main" style="margin-top:16px;" onclick="confirmSp()">${who==='a'?'つぎへ ▶':'✨ はこにわに おむかえする!'}</button>
+    ${hint}
+    <button class="btn-main" style="margin-top:16px;" onclick="confirmSp()">${(!setupOnly&&who==='a')?'つぎへ ▶':'✨ はこにわに おむかえする!'}</button>
   </div>`;
 }
 function pickSp(key){ setupSel=key; renderSetup(); }
 function confirmSp(){
   if(!setupSel){ toast('ペットを えらんでね'); return; }
-  S.pets[setupStep].sp=setupSel;
-  if(setupStep==='a'){
+  const p=S.pets[setupStep];
+  p.sp=setupSel;
+  p.since=realToday();
+  if(setupStep==='a'&&!setupOnly){
     setupStep='b'; setupSel=null; save(); renderSetup();
   }else{
     S.setup=true; save();
+    const only=setupOnly; setupOnly=null;
     document.getElementById('setup').classList.add('hidden');
     showTab('garden');
-    toast('🎉 2ひきが はこにわに やってきた!');
+    toast(only?'🎉 あたらしい たまごが やってきた!':'🎉 2ひきが はこにわに やってきた!');
   }
 }
 
@@ -944,8 +1253,6 @@ function toast(msg){
 }
 function escH(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function escA(s){ return escH(s).replace(/"/g,'&quot;'); }
-function esc(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function unesc(s){ return s; }
 
 function render(tab){
   if(tab==='today') renderToday();
@@ -953,13 +1260,6 @@ function render(tab){
   if(tab==='events') renderEvents();
   if(tab==='settings') renderSettings();
 }
-
-/* 日付が変わったら自動で今日の表示に更新 */
-let lastDate=todayStr();
-setInterval(()=>{
-  const now=todayStr();
-  if(now!==lastDate){ lastDate=now; renderToday(); }
-},30000);
 
 /* ときどき ぴょんと はねる(たまごは ゆれる) */
 setInterval(()=>{
@@ -976,6 +1276,7 @@ setInterval(()=>{
 },2800);
 
 /* 起動 */
+VD();
 if(!S.setup){ startSetup(); }
 showTab('today');
 </script>
