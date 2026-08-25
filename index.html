@@ -38,6 +38,7 @@ body{
   box-shadow:0 6px 18px rgba(255,158,196,.28);
   position:relative;overflow:hidden;
 }
+.countdown .cd-vac{font-size:16px;font-weight:800;color:#7A4A66;letter-spacing:.04em;}
 .countdown .cd-label{font-size:13px;font-weight:700;color:#8A5A72;letter-spacing:.06em;}
 .countdown .cd-num{font-size:44px;font-weight:800;color:#7A4A66;line-height:1.05;}
 .countdown .cd-num small{font-size:16px;font-weight:700;margin-left:2px;}
@@ -223,40 +224,46 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 /* ---------- garden scene wrap (effects) ---------- */
 .scene-wrap{position:relative;}
 .heart-float{z-index:5;transform:translate(-50%,-100%);}
-@keyframes bflyFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,-7px)}}
-.bfly{transform-box:fill-box;transform-origin:50% 50%;animation:bflyFloat 3.6s ease-in-out infinite;}
-@media (prefers-reduced-motion:reduce){.bfly{animation:none;}}
-/* ---------- pet stats ---------- */
-.stat-card{background:var(--card);border-radius:var(--radius);padding:14px 14px 10px;margin-top:14px;box-shadow:0 4px 14px rgba(160,140,180,.12);}
-.stat-card.a{border-left:6px solid var(--sky);}
-.stat-card.b{border-left:6px solid var(--pink);}
-.stat-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:800;margin-bottom:8px;}
-.stat-head .st-total{font-size:12px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 10px;}
-.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.stat-row .st-name{font-size:12.5px;font-weight:800;width:82px;flex:none;}
-.stat-row .st-bar{flex:1;height:12px;background:#F2ECF3;border-radius:999px;overflow:hidden;}
-.stat-row .st-fill{height:100%;border-radius:999px;transition:width .3s;}
-.st-fill.k-chikara{background:linear-gradient(90deg,#FFB48E,#FF8E8E);}
-.st-fill.k-hayasa{background:linear-gradient(90deg,#FFE08F,#FFC46B);}
-.st-fill.k-kashiko{background:linear-gradient(90deg,#9FD3F5,#7FB6F0);}
-.st-fill.k-yasashi{background:linear-gradient(90deg,#FFC1DA,#F79EC8);}
-.stat-row .st-val{font-size:13px;font-weight:800;width:28px;text-align:right;flex:none;}
-.stat-row .st-plus{
-  border:none;background:var(--mint);color:#fff;border-radius:10px;
-  width:32px;height:30px;font-size:15px;font-weight:800;font-family:inherit;flex:none;cursor:pointer;
+/* ---------- pet stats (2匹よこ並び) ---------- */
+.stats-grid{display:flex;gap:9px;}
+.stat-col{flex:1;min-width:0;border-radius:16px;padding:10px 8px 8px;}
+.stat-col.a{background:#F2F8FE;}
+.stat-col.b{background:var(--pink-pale);}
+.sc-name{font-size:13px;font-weight:800;text-align:center;margin-bottom:8px;line-height:1.35;word-break:break-word;}
+.sc-row{display:flex;align-items:center;gap:4px;margin-bottom:5px;min-height:23px;}
+.sc-ic{font-size:14px;width:17px;flex:none;text-align:center;line-height:1;}
+.sc-bar{flex:1;min-width:8px;height:10px;background:#fff;border-radius:999px;overflow:hidden;display:block;}
+.sc-fill{height:100%;border-radius:999px;transition:width .3s;display:block;}
+.sc-fill.k-kashiko{background:linear-gradient(90deg,#9FD3F5,#7FB6F0);}
+.sc-fill.k-yasashi{background:linear-gradient(90deg,#FFC1DA,#F79EC8);}
+.sc-fill.k-geijutsu{background:linear-gradient(90deg,#D6C2F5,#B49BE8);}
+.sc-fill.k-tairyoku{background:linear-gradient(90deg,#AEE7C1,#7ED8B4);}
+.sc-v{font-size:12.5px;font-weight:800;width:21px;text-align:right;flex:none;}
+.sc-plus{
+  border:none;background:var(--mint);color:#fff;border-radius:8px;
+  width:23px;height:23px;font-size:12px;font-weight:800;font-family:inherit;
+  flex:none;cursor:pointer;padding:0;line-height:1;
 }
-.stat-row .st-plus:disabled{background:#EDE6EF;color:#C6BAC9;cursor:default;}
-.st-pt{text-align:center;font-size:12px;font-weight:800;color:var(--ink-soft);margin-top:6px;}
-.st-pt.on{color:#5FA88A;background:#EEFAF3;border-radius:12px;padding:7px;}
+.sc-total{text-align:center;font-size:11.5px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 0;margin-top:4px;}
+.sc-pt{text-align:center;font-size:10.5px;font-weight:800;margin-top:5px;color:var(--ink-soft);line-height:1.5;}
+.sc-pt.on{color:#3F8F6E;background:#E6F8EF;border-radius:10px;padding:5px 2px;}
+.sc-egg{text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-soft);padding:14px 2px;line-height:1.85;}
+.stat-legend{margin-top:10px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-soft);line-height:1.9;}
 /* ---------- album ---------- */
+.album-card{padding:16px;}
+.album-card summary{list-style:none;cursor:pointer;}
+.album-card summary::-webkit-details-marker{display:none;}
+.al-summary{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:800;}
+.al-caret{margin-left:auto;font-size:11px;color:var(--ink-soft);transition:transform .2s;}
+.album-card[open] .al-caret{transform:rotate(180deg);}
 .album-item{display:flex;align-items:center;gap:10px;background:#FBF7FF;border:1.5px solid #EADFF7;border-radius:16px;padding:10px;margin-bottom:8px;}
 .album-item .al-img{flex:none;background:#fff;border-radius:12px;padding:4px;}
 .album-item .al-body{flex:1;min-width:0;}
 .al-name{font-size:15px;font-weight:800;}
 .al-sub{font-size:11.5px;color:var(--ink-soft);font-weight:700;}
 .al-days{font-size:12.5px;font-weight:800;color:#8A79B8;margin:3px 0 1px;}
-.al-stats{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;}
-.al-st{font-size:11px;font-weight:800;background:#fff;border:1px solid #E6DCF2;border-radius:999px;padding:2px 7px;color:#7C6B8A;}
+.al-stats{margin-top:5px;display:flex;flex-wrap:wrap;gap:3px;}
+.al-st{font-size:10.5px;font-weight:800;background:#fff;border:1px solid #E6DCF2;border-radius:999px;padding:2px 5px;color:#7C6B8A;white-space:nowrap;}
 .al-st.total{background:var(--lav);border-color:var(--lav);color:#fff;}
 /* ---------- settings extras ---------- */
 .hw-block{background:#FBF8FB;border-radius:16px;padding:10px;margin-bottom:10px;}
@@ -304,34 +311,34 @@ const KEY='natsuyasumiApp2026';
 
 /* ---------- ペットのパラメータ定義 ---------- */
 const STATS=[
-  {k:'chikara', name:'ちから',   icon:'💪'},
-  {k:'hayasa',  name:'すばやさ', icon:'⚡'},
-  {k:'kashiko', name:'かしこさ', icon:'📘'},
-  {k:'yasashi', name:'やさしさ', icon:'💗'}
+  {k:'kashiko',  name:'かしこさ',   icon:'📘'},
+  {k:'yasashi',  name:'やさしさ',   icon:'💗'},
+  {k:'geijutsu', name:'げいじゅつ', icon:'🎨'},
+  {k:'tairyoku', name:'たいりょく', icon:'⚽️'}
 ];
 const SPECIES={
-  usagi:  {name:'うさぎ',      egg:'わたげのたまご',   base:{chikara:6, hayasa:14,kashiko:9, yasashi:11}},
-  dragon: {name:'ドラゴン',    egg:'くせげのたまご',   base:{chikara:15,hayasa:9, kashiko:10,yasashi:6}},
-  unicorn:{name:'ユニコーン',  egg:'つののたまご',     base:{chikara:8, hayasa:11,kashiko:12,yasashi:9}},
-  lion:   {name:'ライオン',    egg:'しっぽのたまご',   base:{chikara:14,hayasa:11,kashiko:7, yasashi:8}},
-  griffon:{name:'グリフォン',  egg:'くちばしのたまご', base:{chikara:11,hayasa:13,kashiko:10,yasashi:6}},
-  hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{chikara:7, hayasa:7, kashiko:11,yasashi:15}}
+  usagi:  {name:'うさぎ',      egg:'わたげのたまご',   base:{kashiko:8, yasashi:13,geijutsu:9, tairyoku:10}},
+  dragon: {name:'ドラゴン',    egg:'くせげのたまご',   base:{kashiko:9, yasashi:5, geijutsu:9, tairyoku:17}},
+  unicorn:{name:'ユニコーン',  egg:'つののたまご',     base:{kashiko:11,yasashi:10,geijutsu:15,tairyoku:4}},
+  lion:   {name:'ライオン',    egg:'しっぽのたまご',   base:{kashiko:6, yasashi:8, geijutsu:10,tairyoku:16}},
+  griffon:{name:'グリフォン',  egg:'くちばしのたまご', base:{kashiko:14,yasashi:6, geijutsu:8, tairyoku:12}},
+  hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{kashiko:12,yasashi:16,geijutsu:8, tairyoku:4}}
 };
 const STAGE_NAMES=['たまご','あかちゃん','こども','おとな','キラキラ'];
-/* 育成しきい値: 2026年の夏休み(36日)のペースで固定。冬休み・春休みでも同じ */
-const STAGE_TH=[0,3,9,17,29];
+/* 育成しきい値。長期休みの種類によらず固定 */
+const STAGE_TH=[0,3,9,17,20];
 
 /* ---------- 月ごとの四すみのかざり ---------- */
 const DECO={
   1:['⛄','🎍','🍊','🧤'], 2:['⛄','👹','❄️','🍫'], 3:['🌸','🌷','🦋','🍡'],
-  4:['🌸','🎏','🌱','🍙'], 5:['🎏','🌿','☀️','🍓'], 6:['☔','🐌','🐸','💧'],
+  4:['🌸','🎒','🌱','🍙'], 5:['🎏','🌿','☀️','🌳'], 6:['☔','🐌','🐸','🐳'],
   7:['🌻','🍉','⛱️','🎐'], 8:['🌻','🍉','🎆','🍧'], 9:['🌕','🍇','🍠','🐰'],
-  10:['🎃','🍁','🌰','👻'],11:['🍁','🍂','🍄','🌰'],12:['🎄','⛄','🎅','🍊']
+  10:['🎃','🍁','🌰','👻'],11:['🍁','🍂','🍄','🌰'],12:['🎄','⛄','🎅','❄️']
 };
 
 function newPet(){
-  return {sp:null,fed:0,snacks:0,petName:null,since:null,points:0,
-          stats:{chikara:0,hayasa:0,kashiko:0,yasashi:0}};
+  return {sp:null,fed:0,snacks:0,petName:null,since:null,
+          stats:{kashiko:0,yasashi:0,geijutsu:0,tairyoku:0}};
 }
 
 const DEFAULT_STATE={
@@ -413,12 +420,10 @@ function loadState(){
       const rawP=(s.pets&&s.pets[w])?s.pets[w]:null;
       let p=Object.assign(newPet(), rawP);
       if(p.sp&&!SPECIES[p.sp]){ p=newPet(); s2.setup=false; }
-      if(!p.stats||typeof p.stats!=='object') p.stats={chikara:0,hayasa:0,kashiko:0,yasashi:0};
+      if(!p.stats||typeof p.stats!=='object') p.stats={};
       STATS.forEach(st=>{ if(typeof p.stats[st.k]!=='number') p.stats[st.k]=0; });
-      if(!rawP||typeof rawP.points!=='number'){
-        /* v2からの移行: そだてた回数ぶんを未使用ポイントとして付与 */
-        p.points=Math.max(0, p.fed - STATS.reduce((a,st)=>a+p.stats[st.k],0));
-      }
+      Object.keys(p.stats).forEach(k=>{ if(!STATS.some(st=>st.k===k)) delete p.stats[k]; });
+      delete p.points;
       if(!p.since&&p.sp) p.since=s2.start;
       s2.pets[w]=p;
     });
@@ -459,14 +464,14 @@ function goToday(){
 function patternFor(dateStr){
   const dow=parseD(dateStr).getDay();
   if(isJPHoliday(dateStr))
-    return {type:'sunday', label:'🎌 祝日', tasks:S.patterns.sunday, bg:'sky-bg'};
+    return {type:'sunday', label:'祝日', tasks:S.patterns.sunday, bg:'sky-bg'};
   if(dow===0)
-    return {type:'sunday', label:'🚗 日曜', tasks:S.patterns.sunday, bg:'sky-bg'};
+    return {type:'sunday', label:'日曜', tasks:S.patterns.sunday, bg:'sky-bg'};
   if(dow===6)
-    return {type:'saturday', label:'🎵 土曜', tasks:S.patterns.saturday, bg:'mint-bg'};
+    return {type:'saturday', label:'土曜', tasks:S.patterns.saturday, bg:'mint-bg'};
   if(inVacation(dateStr))
-    return {type:'weekday', label:'☀️ 平日', tasks:S.patterns.weekday, bg:'green-bg'};
-  return {type:'school', label:'🎒 学校の日', tasks:S.patterns.school, bg:'lav-bg'};
+    return {type:'weekday', label:'平日', tasks:S.patterns.weekday, bg:'green-bg'};
+  return {type:'school', label:'平日', tasks:S.patterns.school, bg:'green-bg'};
 }
 
 /* ---------- チェック状態 ---------- */
@@ -485,6 +490,9 @@ function nextInfo(fed){
   if(st>=4) return 'おやつ1こで パラメータ +1!';
   return 'つぎまで あと'+(STAGE_TH[st+1]-fed)+'かい';
 }
+/* 最終形態(おやつ20回)に到達したあと、おやつ1つ = パラメータ1ポイント */
+function usedPoints(p){ return STATS.reduce((a,st)=>a+(p.stats[st.k]||0),0); }
+function availPoints(p){ return Math.max(0, p.fed - STAGE_TH[4] - usedPoints(p)); }
 function statTotal(p){
   const base=SPECIES[p.sp].base;
   return STATS.reduce((a,st)=>a+base[st.k]+p.stats[st.k],0);
@@ -531,8 +539,8 @@ function renderToday(){
   let cdHtml='';
   if(vac){
     const toEnd=dayDiff(t,S.end);
-    if(toEnd>0) cdHtml=`<div class="cd-label">${escH(S.vacName)}は あと</div><div class="cd-num">${toEnd}<small>日</small></div>`;
-    else cdHtml=`<div class="cd-label">${escH(S.vacName)}</div><div class="cd-num" style="font-size:24px;padding:4px 0;">最後の日</div>`;
+    if(toEnd>0) cdHtml=`<div class="cd-vac">${escH(S.vacName)}</div><div class="cd-label">あと</div><div class="cd-num">${toEnd}<small>日</small></div>`;
+    else cdHtml=`<div class="cd-vac">${escH(S.vacName)}</div><div class="cd-num" style="font-size:24px;padding:4px 0;">最後の日</div>`;
   }
 
   const dateTxt=fmtLong(t)+'('+WD[d.getDay()]+')';
@@ -559,7 +567,7 @@ function renderToday(){
   const evTasks=ev?ev.tasks:[];
   curDaily=pat.tasks.concat(evTasks);
   const listTitle=(t===rt)?'今日':fmtLong(t);
-  html+=`<div class="card"><h2>📝 ${listTitle}のやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':pat.type==='school'?'t-lav':'t-green'}">${pat.label.replace(/^\S+\s/,'')}</span></h2>`;
+  html+=`<div class="card"><h2>📝 ${listTitle}のやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':'t-green'}">${pat.label}</span></h2>`;
   if(curDaily.length===0){
     html+=`<div class="empty-msg">やることが登録されていません<br>(設定 / イベントから追加できます)</div>`;
   }
@@ -670,7 +678,6 @@ function renderGarden(){
   const pa=S.pets.a, pb=S.pets.b;
   const ever=totalEverFed();
   const flowers=Math.min(18,Math.floor(ever/3));
-  const butterflies=Math.min(4,Math.floor(Math.max(0,ever-54)/12));
 
   let flowerSVG='';
   const fx=[24,54,90,130,176,214,252,288,318,150,70,240,10,110,196,272,336,44];
@@ -681,15 +688,6 @@ function renderGarden(){
       <line x1="0" y1="0" x2="0" y2="10" stroke="#8FCB9B" stroke-width="2"/>
       <circle cx="0" cy="-3" r="4.5" fill="${fc[i%fc.length]}"/>
       <circle cx="0" cy="-3" r="1.8" fill="#FFF6E0"/></g>`;
-  }
-  let bfSVG='';
-  const bfp=[[40,96],[300,74],[160,64],[228,104]];
-  for(let i=0;i<butterflies;i++){
-    const [x,y]=bfp[i];
-    bfSVG+=`<g class="bfly" style="animation-delay:${i*1.3}s" transform="translate(${x},${y})">
-      <ellipse cx="-3.5" cy="0" rx="3.6" ry="4.6" fill="#FFB7D5" opacity=".95"/>
-      <ellipse cx="3.5" cy="0" rx="3.6" ry="4.6" fill="#C9B6F0" opacity=".95"/>
-      <line x1="0" y1="-3" x2="0" y2="3" stroke="#8A6E7C" stroke-width="1.3"/></g>`;
   }
 
   const petAW=pa.sp?petImgInScene(pa.sp,stageOf(pa.fed),92):'';
@@ -712,7 +710,7 @@ function renderGarden(){
     <ellipse cx="94" cy="44" rx="20" ry="9" fill="#FFF" opacity=".9"/>
     <ellipse cx="180" cy="24" rx="22" ry="9" fill="#FFF" opacity=".75"/>
     <path d="M0,158 Q86,140 173,152 T346,150 L346,210 L0,210 Z" fill="url(#grdG)"/>
-    ${flowerSVG}${bfSVG}
+    ${flowerSVG}
     <g id="pet-a-g" class="${stageOf(pa.fed)===0?'pet-egg':'pet-idle'}">${petAW}</g>
     <g id="pet-b-g" class="${stageOf(pb.fed)===0?'pet-egg':'pet-idle'}">${petBW}</g>
   </svg></div>`;
@@ -734,27 +732,45 @@ function renderGarden(){
     </div>`;
   }
 
-  function statBox(who){
-    const p=S.pets[who];
-    if(!p.sp||stageOf(p.fed)===0) return '';
-    let rows='';
-    STATS.forEach(st=>{
-      const v=statVal(p,st.k);
-      const w=Math.min(100,Math.round(v/40*100));
-      rows+=`<div class="stat-row">
-        <div class="st-name">${st.icon} ${st.name}</div>
-        <div class="st-bar"><div class="st-fill k-${st.k}" style="width:${w}%"></div></div>
-        <div class="st-val">${v}</div>
-        <button class="st-plus" ${p.points>0?'':'disabled'} onclick="raiseStat('${who}','${st.k}')">＋</button>
-      </div>`;
+  /* 2匹のパラメータを横に並べて表示 */
+  function statsCard(){
+    const hatched=['a','b'].filter(w=>S.pets[w].sp&&stageOf(S.pets[w].fed)>0);
+    if(hatched.length===0) return '';
+    let scale=STAGE_TH[4];
+    ['a','b'].forEach(w=>{
+      const p=S.pets[w];
+      if(p.sp) STATS.forEach(st=>{ scale=Math.max(scale,statVal(p,st.k)); });
     });
-    return `<div class="stat-card ${who}">
-      <div class="stat-head">
-        <span>${escH(p.petName||SPECIES[p.sp].name)}の つよさ</span>
-        <span class="st-total">そうごう ${statTotal(p)}</span>
-      </div>
-      ${rows}
-      <div class="st-pt ${p.points>0?'on':''}">${p.points>0?'のばせるポイント ×'+p.points+' 🎁':'おやつをあげると ポイントが もらえるよ'}</div>
+    function col(who){
+      const p=S.pets[who];
+      if(!p.sp) return `<div class="stat-col ${who}"><div class="sc-egg">まだ たまごを<br>えらんでいないよ</div></div>`;
+      if(stageOf(p.fed)===0) return `<div class="stat-col ${who}">
+        <div class="sc-name">${escH(S.names[who])}の<br>${escH(SPECIES[p.sp].egg)}</div>
+        <div class="sc-egg">🥚<br>うまれたら<br>パラメータが<br>あらわれるよ</div></div>`;
+      const pt=availPoints(p);
+      let rows='';
+      STATS.forEach(st=>{
+        const v=statVal(p,st.k);
+        const w=Math.min(100,Math.round(v/scale*100));
+        rows+=`<div class="sc-row">
+          <span class="sc-ic">${st.icon}</span>
+          <span class="sc-bar"><span class="sc-fill k-${st.k}" style="width:${w}%"></span></span>
+          <span class="sc-v">${v}</span>
+          ${pt>0?`<button class="sc-plus" onclick="raiseStat('${who}','${st.k}')">＋</button>`:''}
+        </div>`;
+      });
+      return `<div class="stat-col ${who}">
+        <div class="sc-name">${escH(p.petName||SPECIES[p.sp].name)}</div>
+        ${rows}
+        <div class="sc-total">そうごう ${statTotal(p)}</div>
+        <div class="sc-pt ${pt>0?'on':''}">${pt>0?'のばせる ×'+pt+' 🎁':(stageOf(p.fed)>=4?'おやつで ポイントゲット':'キラキラに なったら のばせるよ')}</div>
+      </div>`;
+    }
+    return `<div class="card">
+      <h2>✨ ふたりの パラメータ</h2>
+      <div class="stats-grid">${col('a')}${col('b')}</div>
+      <div class="stat-legend">${STATS.map(st=>st.icon+' '+st.name).join('　')}</div>
+      <div class="stat-legend" style="margin-top:4px;">キラキラに なったあとの おやつ1こで、すきな ところを +1 できるよ</div>
     </div>`;
   }
 
@@ -764,9 +780,9 @@ function renderGarden(){
     ${scene}
     <div class="pet-panel">${panel('a')}${panel('b')}</div>
     <div class="garden-note">おてつだいを ぜんぶできた日は おやつがもらえるよ🍪<br>
-      これまでの がんばりの合計で お花がふえていくよ🌸(いま ${flowers}こ)${butterflies>0?'<br>ちょうちょも あそびに きたよ🦋':''}</div>
+      これまでの がんばりの合計で お花がふえていくよ🌸(いま ${flowers}こ)</div>
   </div>
-  ${statBox('a')}${statBox('b')}
+  ${statsCard()}
   ${renderAlbum()}
   <div class="section-gap"></div>`;
 }
@@ -805,8 +821,8 @@ function spawnHearts(who){
 
 function raiseStat(who,k){
   const p=S.pets[who];
-  if(p.points<=0) return;
-  p.points--; p.stats[k]++;
+  if(availPoints(p)<=0) return;
+  p.stats[k]++;
   save(); renderGarden();
   const nm=STATS.find(s=>s.k===k).name;
   toast('✨ '+nm+'が あがった! ('+statVal(p,k)+')');
@@ -816,7 +832,7 @@ function feed(who){
   const p=S.pets[who];
   if(p.snacks<=0) return;
   const before=stageOf(p.fed);
-  p.snacks--; p.fed++; p.points++;
+  p.snacks--; p.fed++;
   if(!p.since) p.since=realToday();
   save();
   const after=stageOf(p.fed);
@@ -832,7 +848,7 @@ function feed(who){
   }else if(after===0){
     toast('こつん… たまごが うごいた!');
   }else{
-    toast('もぐもぐ… ポイント+1! ('+p.points+'こ)');
+    toast(stageOf(p.fed)>=4?'もぐもぐ… パラメータポイント +1! ('+availPoints(p)+'こ)':'もぐもぐ… '+(p.petName||'ペット')+'は うれしそう!');
   }
 }
 
@@ -851,20 +867,19 @@ function renderAlbum(){
     items+=`<div class="album-item">
       <div class="al-img">${petIMG(r.sp,r.stage,72)}</div>
       <div class="al-body">
-        <div class="al-name">${escH(r.petName||SPECIES[r.sp].name)}</div>
-        <div class="al-sub">${escH(S.names[r.who]||'')}の ${SPECIES[r.sp].name}・${STAGE_NAMES[r.stage]}</div>
+        <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||SPECIES[r.sp].name)}</div>
         <div class="al-days">いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
         <div class="al-sub">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}・🍪×${r.fed}</div>
-        <div class="al-stats">${statsHtml}<span class="al-st total">そうごう ${(function(){let n=0;STATS.forEach(st=>{n+=(SPECIES[r.sp].base[st.k]||0)+((r.stats&&r.stats[st.k])||0);});return n;})()}</span></div>
+        <div class="al-stats">${statsHtml}</div>
       </div>
       <button class="ev-del" onclick="delAlbum(${idx})">✕</button>
     </div>`;
   });
-  return `<div class="card">
-    <h2>🏅 そつぎょうアルバム <span class="tag t-lav">${S.album.length}ひき</span></h2>
-    <div class="set-note">たまごから そだて直したときに、それまでの子が ここに のこります。</div>
+  return `<details class="card album-card">
+    <summary><div class="al-summary">🏅 そつぎょうアルバム <span class="tag t-lav">${S.album.length}ひき</span><span class="al-caret">▼</span></div></summary>
+    <div class="set-note" style="margin-top:10px;">たまごから そだて直したときに、それまでの子が ここに のこります。</div>
     ${items}
-  </div>`;
+  </details>`;
 }
 function delAlbum(i){
   const r=S.album[i];
@@ -1025,18 +1040,18 @@ function renderSettings(){
   </div>
   <div class="card">
     <h2>📅 長期休みの期間</h2>
-    <div class="set-note">この期間の平日は「☀️ 平日」パターン、期間外の平日は「🎒 学校の日」パターンになります。土曜・日曜・祝日は一年中おなじです。<br>期間中だけ、上部にカウントダウンが表示されます。</div>
+    <div class="set-note">この期間の平日は「平日(長期休み)」、期間外の平日は「平日(ふだん)」のリストになります。土曜・日曜・祝日は一年中おなじです。<br>期間中だけ、上部に休みの名前とカウントダウンが表示されます。</div>
     <div class="form-row"><label>休みの名前(例:なつやすみ、ふゆやすみ、はるやすみ)</label><input type="text" id="set-vacname" value="${escA(S.vacName||'なつやすみ')}"></div>
     <div class="form-row"><label>はじまり</label><input type="date" id="set-start" value="${S.start}"></div>
     <div class="form-row"><label>おわり(カウントダウンの目標日)</label><input type="date" id="set-end" value="${S.end}"></div>
   </div>
   <div class="card">
     <h2>📝 毎日のやること</h2>
-    <div class="set-note">1行に1つずつ。曜日と期間で自動的に切り替わります。</div>
-    <div class="form-row"><label>🎒 学校の日(休みの期間外の平日)</label><textarea id="set-school">${escH(S.patterns.school.join('\n'))}</textarea></div>
-    <div class="form-row"><label>☀️ 平日(休みの期間中)</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
-    <div class="form-row"><label>🎵 土曜(習い事の日)</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
-    <div class="form-row"><label>🚗 日曜・🎌 祝日</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
+    <div class="set-note">1行に1つずつ。曜日と期間で自動的に切り替わります。平日は、長期休みの期間中かどうかで自動的に使い分けます(どちらも表示は「平日」)。</div>
+    <div class="form-row"><label>平日(ふだん・学校がある日)</label><textarea id="set-school">${escH(S.patterns.school.join('\n'))}</textarea></div>
+    <div class="form-row"><label>平日(長期休みの期間中)</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
+    <div class="form-row"><label>土曜</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
+    <div class="form-row"><label>日曜・祝日</label><textarea id="set-sunday">${escH(S.patterns.sunday.join('\n'))}</textarea></div>
   </div>
   <div class="card">
     <h2>🧺 お手伝い(ペットのおやつ)</h2>
@@ -1100,7 +1115,7 @@ function rechoosePet(who){
     if(willArchive){
       S.album.push({
         who, sp:p.sp, petName:p.petName, fed:p.fed, stage:st,
-        stats:Object.assign({},p.stats), points:p.points,
+        stats:Object.assign({},p.stats),
         since:p.since||S.start, until:realToday()
       });
     }
@@ -1214,7 +1229,7 @@ function renderSetup(){
   let hint='';
   if(sel){
     hint=`<div class="sp-hint">${sel.egg} … <b>${sel.name}</b> が うまれるよ<br>`+
-      STATS.map(st=>`${st.icon}${st.name} ${sel.base[st.k]}`).join('　')+`</div>`;
+      STATS.map(st=>`${st.icon}${sel.base[st.k]}`).join('　')+`<br><span style="font-size:11px;color:#9C8791;">${STATS.map(st=>st.icon+st.name).join('　')}</span></div>`;
   }
   el.innerHTML=`<div class="setup-in">
     <h1>🥚 ${escH(S.names[who])}のたまごをえらぼう!</h1>
