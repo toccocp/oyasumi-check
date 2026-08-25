@@ -1265,7 +1265,8 @@ function testSnack(){
   if(!confirm('確認用に、選ばれている全ペットへおやつを10こずつ追加します。')) return;
   ['a','b'].forEach(w=>{ if(S.pets[w].sp) S.pets[w].snacks+=10; });
   save();
-  toast('🍪 お試しおやつを追加しました');
+  showTab('garden');
+  toast('🍪 お試しおやつを10こずつ追加しました');
 }
 
 /* =========================================================
