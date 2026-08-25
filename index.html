@@ -126,8 +126,6 @@ body{
 .pet-idle.yay{animation:petYay .9s ease;}
 .pet-egg.yay{animation:eggWiggle .8s ease;}
 @media (prefers-reduced-motion:reduce){.pet-idle,.pet-egg{animation:none;}}
-@keyframes heartUp{0%{opacity:1;transform:translateY(0) scale(.7)}100%{opacity:0;transform:translateY(-46px) scale(1.25)}}
-.heart-float{position:absolute;font-size:18px;animation:heartUp 1.1s ease forwards;pointer-events:none;}
 /* ---------- events ---------- */
 .ev-item{
   display:flex;align-items:center;gap:10px;background:#FFFDF4;
@@ -222,16 +220,36 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
   padding:9px 12px;font-size:12.5px;font-weight:700;color:#9A7530;text-align:center;cursor:pointer;
 }
 /* ---------- garden scene wrap (effects) ---------- */
-.scene-wrap{position:relative;}
-.heart-float{z-index:5;transform:translate(-50%,-100%);}
+.scene-wrap{position:relative;border-radius:18px;overflow:hidden;}
+.fx{
+  position:absolute;z-index:6;pointer-events:none;line-height:1;
+  opacity:0;transform:translate(-50%,-100%) scale(.4);
+  animation:fxUp 1.1s cubic-bezier(.22,.7,.3,1) forwards;
+  will-change:transform,opacity;
+}
+@keyframes fxUp{
+  0%{opacity:0;transform:translate(-50%,-100%) scale(.4) rotate(0deg);}
+  18%{opacity:1;}
+  65%{opacity:1;}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-100% - var(--dy))) scale(var(--sc)) rotate(var(--rot));}
+}
+@media (prefers-reduced-motion:reduce){.fx{display:none;}}
 /* ---------- pet stats (2匹よこ並び) ---------- */
 .stats-grid{display:flex;gap:9px;}
 .stat-col{flex:1;min-width:0;border-radius:16px;padding:10px 8px 8px;}
 .stat-col.a{background:#F2F8FE;}
 .stat-col.b{background:var(--pink-pale);}
 .sc-name{font-size:13px;font-weight:800;text-align:center;margin-bottom:8px;line-height:1.35;word-break:break-word;}
-.sc-row{display:flex;align-items:center;gap:4px;margin-bottom:5px;min-height:23px;}
-.sc-ic{font-size:14px;width:17px;flex:none;text-align:center;line-height:1;}
+.sc-row{display:flex;align-items:center;gap:5px;margin-bottom:5px;min-height:24px;}
+.sc-ic{
+  font-size:14px;width:24px;height:24px;flex:none;line-height:1;padding:0;
+  border:none;background:none;border-radius:50%;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+}
+.sc-ic.on{background:#E6F8EF;box-shadow:0 0 0 2px #7ED8B4;cursor:pointer;animation:icPulse 1.6s ease-in-out infinite;}
+@keyframes icPulse{0%,100%{box-shadow:0 0 0 2px #7ED8B4;}50%{box-shadow:0 0 0 4px rgba(126,216,180,.35);}}
+@media (prefers-reduced-motion:reduce){.sc-ic.on{animation:none;}}
+.sc-tap{font-size:9.5px;font-weight:800;color:#3F8F6E;}
 .sc-bar{flex:1;min-width:8px;height:10px;background:#fff;border-radius:999px;overflow:hidden;display:block;}
 .sc-fill{height:100%;border-radius:999px;transition:width .3s;display:block;}
 .sc-fill.k-kashiko{background:linear-gradient(90deg,#9FD3F5,#7FB6F0);}
@@ -239,11 +257,6 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 .sc-fill.k-geijutsu{background:linear-gradient(90deg,#D6C2F5,#B49BE8);}
 .sc-fill.k-tairyoku{background:linear-gradient(90deg,#AEE7C1,#7ED8B4);}
 .sc-v{font-size:12.5px;font-weight:800;width:21px;text-align:right;flex:none;}
-.sc-plus{
-  border:none;background:var(--mint);color:#fff;border-radius:8px;
-  width:23px;height:23px;font-size:12px;font-weight:800;font-family:inherit;
-  flex:none;cursor:pointer;padding:0;line-height:1;
-}
 .sc-total{text-align:center;font-size:11.5px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 0;margin-top:4px;}
 .sc-pt{text-align:center;font-size:10.5px;font-weight:800;margin-top:5px;color:var(--ink-soft);line-height:1.5;}
 .sc-pt.on{color:#3F8F6E;background:#E6F8EF;border-radius:10px;padding:5px 2px;}
@@ -785,17 +798,16 @@ function renderGarden(){
         const v=statVal(p,st.k);
         const w=Math.min(100,Math.round(v/scale*100));
         rows+=`<div class="sc-row">
-          <span class="sc-ic">${st.icon}</span>
+          <button class="sc-ic ${pt>0?'on':''}" ${pt>0?'':'disabled'} onclick="raiseStat('${who}','${st.k}')">${st.icon}</button>
           <span class="sc-bar"><span class="sc-fill k-${st.k}" style="width:${w}%"></span></span>
           <span class="sc-v">${v}</span>
-          ${pt>0?`<button class="sc-plus" onclick="raiseStat('${who}','${st.k}')">＋</button>`:''}
         </div>`;
       });
       return `<div class="stat-col ${who}">
         <div class="sc-name">${escH(p.petName||SPECIES[p.sp].name)}</div>
         ${rows}
         <div class="sc-total">そうごう ${statTotal(p)}</div>
-        <div class="sc-pt ${pt>0?'on':''}">${pt>0?'のばせる ×'+pt+' 🎁':(stageOf(p.fed)>=4?'おやつで ポイントゲット':'キラキラに なったら のばせるよ')}</div>
+        <div class="sc-pt ${pt>0?'on':''}">${pt>0?'のばせる ×'+pt+' 🎁<br><span class="sc-tap">アイコンを タップ!</span>':(stageOf(p.fed)>=4?'おやつで ポイントゲット':'キラキラに なったら のばせるよ')}</div>
       </div>`;
     }
     return `<div class="card">
@@ -832,20 +844,36 @@ function petHeadPos(who){
   const y=162-STAGE_H[stageOf(p.fed)];
   return {left:(cx/346*100), top:(y/210*100)};
 }
-function spawnHearts(who){
+const FX={
+  feed:['💗','💛','⭐','✨','🍪','💫','💞'],
+  stat:['✨','✨','✨','✨','⭐','💫','🌟','✨']
+};
+function spawnEffect(who,type){
   const wrap=document.getElementById('scene-wrap');
   if(!wrap) return;
   const pos=petHeadPos(who);
-  ['💗','💛','⭐'].forEach((ch,i)=>{
-    const h=document.createElement('span');
-    h.className='heart-float';
-    h.textContent=ch;
-    h.style.left='calc('+pos.left+'% + '+((i-1)*15)+'px)';
-    h.style.top='calc('+pos.top+'% - '+(4+i*3)+'px)';
-    h.style.animationDelay=(i*0.12)+'s';
-    wrap.appendChild(h);
-    setTimeout(()=>h.remove(),1500);
-  });
+  const set=FX[type]||FX.feed;
+  const n=type==='stat'?10:6;
+  const R=(a,b)=>a+Math.random()*(b-a);
+  /* 頭の上に残っている高さのぶんだけ舞い上がる(シーンからはみ出さない) */
+  const wrapH=wrap.getBoundingClientRect().height||196;
+  const room=Math.max(26, pos.top/100*wrapH - 4);
+  for(let i=0;i<n;i++){
+    const el=document.createElement('span');
+    el.className='fx';
+    el.textContent=set[Math.floor(Math.random()*set.length)];
+    el.style.left=pos.left+'%';
+    el.style.top=pos.top+'%';
+    el.style.setProperty('--dx',R(-32,32).toFixed(1)+'px');
+    el.style.setProperty('--dy',R(room*.45,room).toFixed(1)+'px');
+    el.style.setProperty('--sc',R(.75,1.5).toFixed(2));
+    el.style.setProperty('--rot',R(-45,45).toFixed(0)+'deg');
+    el.style.fontSize=R(11,21).toFixed(0)+'px';
+    el.style.animationDuration=R(.85,1.6).toFixed(2)+'s';
+    el.style.animationDelay=R(0,.32).toFixed(2)+'s';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(),2200);
+  }
 }
 
 function raiseStat(who,k){
@@ -853,8 +881,11 @@ function raiseStat(who,k){
   if(availPoints(p)<=0) return;
   p.stats[k]++; p.alloc=(p.alloc||0)+1;
   save(); renderGarden();
-  const nm=STATS.find(s=>s.k===k).name;
-  toast('✨ '+nm+'が あがった! ('+statVal(p,k)+')');
+  spawnEffect(who,'stat');
+  const g=document.getElementById('pet-'+who+'-g');
+  if(g){ g.classList.add('yay'); setTimeout(()=>g.classList.remove('yay'),950); }
+  const st=STATS.find(x=>x.k===k);
+  toast('✨ '+st.icon+st.name+'が あがった! ('+statVal(p,k)+')');
 }
 
 function feed(who){
@@ -874,7 +905,7 @@ function feed(who){
   renderGarden();
   const g=document.getElementById('pet-'+who+'-g');
   if(g){ g.classList.add('yay'); setTimeout(()=>g.classList.remove('yay'),950); }
-  spawnHearts(who);
+  spawnEffect(who,'feed');
   if(before===0&&after>=1){
     setTimeout(()=>openNaming(who,true),750);
   }else if(after>before){
@@ -1128,8 +1159,7 @@ function petAdminRow(who){
       <button class="btn-sub" style="margin-top:0;" onclick="rechoosePet('${who}')">🥚 たまごを選ぶ</button></div>`;
   }
   const st=stageOf(p.fed);
-  const label=st===0?SPECIES[p.sp].egg:(p.petName||SPECIES[p.sp].name);
-  return `<div class="form-row"><label>${icon} ${nm} — ${escH(label)}(${STAGE_NAMES[st]}・🍪×${p.fed}${st>0?'・そうごう'+statTotal(p):''})</label>
+  return `<div class="form-row"><label>${icon} ${nm}</label>
     ${st>0?`<button class="btn-sub" style="margin-top:0;" onclick="openNaming('${who}',false)">✏️ 名前を変える</button>`:''}
     <button class="btn-sub" ${st>0?'':'style="margin-top:0;"'} onclick="rechoosePet('${who}')">🥚 たまごから育て直す(この子だけ)</button>
   </div>`;
