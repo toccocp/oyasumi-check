@@ -256,15 +256,34 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 .al-summary{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:800;}
 .al-caret{margin-left:auto;font-size:11px;color:var(--ink-soft);transition:transform .2s;}
 .album-card[open] .al-caret{transform:rotate(180deg);}
-.album-item{display:flex;align-items:center;gap:10px;background:#FBF7FF;border:1.5px solid #EADFF7;border-radius:16px;padding:10px;margin-bottom:8px;}
-.album-item .al-img{flex:none;background:#fff;border-radius:12px;padding:4px;}
-.album-item .al-body{flex:1;min-width:0;}
-.al-name{font-size:15px;font-weight:800;}
-.al-sub{font-size:11.5px;color:var(--ink-soft);font-weight:700;}
-.al-days{font-size:12.5px;font-weight:800;color:#8A79B8;margin:3px 0 1px;}
-.al-stats{margin-top:5px;display:flex;flex-wrap:wrap;gap:3px;}
-.al-st{font-size:10.5px;font-weight:800;background:#fff;border:1px solid #E6DCF2;border-radius:999px;padding:2px 5px;color:#7C6B8A;white-space:nowrap;}
-.al-st.total{background:var(--lav);border-color:var(--lav);color:#fff;}
+.al-list{margin-top:12px;display:flex;flex-direction:column;gap:12px;}
+.al-card{
+  position:relative;border-radius:22px;padding:14px 14px 12px;text-align:center;
+  border:2px solid #fff;box-shadow:0 5px 16px rgba(160,140,180,.16);
+}
+.al-sparkle{position:absolute;font-size:12px;color:var(--ac);opacity:.55;}
+.al-sparkle.s1{left:12px;top:10px;} .al-sparkle.s2{right:34px;bottom:12px;font-size:10px;}
+.al-del{
+  position:absolute;right:9px;top:9px;border:none;background:rgba(255,255,255,.75);
+  color:#B9A6B2;border-radius:50%;width:26px;height:26px;font-size:12px;
+  font-family:inherit;cursor:pointer;line-height:1;padding:0;
+}
+.al-photo{position:relative;display:inline-block;padding:6px 14px;}
+.al-halo{position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;}
+.al-photo img{position:relative;}
+.al-name{font-size:16px;font-weight:800;color:#6B5560;margin-top:2px;letter-spacing:.02em;}
+.al-ribbon{
+  display:inline-block;margin-top:7px;background:#fff;border:1.5px solid var(--ac);
+  color:var(--ac);border-radius:999px;padding:4px 13px;font-size:12px;font-weight:800;
+}
+.al-ribbon b{font-size:13.5px;}
+.al-meta{font-size:11.5px;font-weight:700;color:var(--ink-soft);margin-top:7px;}
+.al-stats{margin-top:8px;display:flex;justify-content:center;gap:5px;}
+.al-st{
+  font-size:11px;font-weight:700;background:rgba(255,255,255,.85);
+  border-radius:12px;padding:4px 7px;color:#7C6B8A;white-space:nowrap;
+}
+.al-st b{font-size:12.5px;font-weight:800;color:#6B5560;margin-left:1px;}
 /* ---------- settings extras ---------- */
 .hw-block{background:#FBF8FB;border-radius:16px;padding:10px;margin-bottom:10px;}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:8px;cursor:pointer;}
@@ -317,12 +336,12 @@ const STATS=[
   {k:'tairyoku', name:'たいりょく', icon:'⚽️'}
 ];
 const SPECIES={
-  usagi:  {name:'うさぎ',      egg:'わたげのたまご',   base:{kashiko:8, yasashi:13,geijutsu:9, tairyoku:10}},
-  dragon: {name:'ドラゴン',    egg:'くせげのたまご',   base:{kashiko:9, yasashi:5, geijutsu:9, tairyoku:17}},
-  unicorn:{name:'ユニコーン',  egg:'つののたまご',     base:{kashiko:11,yasashi:10,geijutsu:15,tairyoku:4}},
-  lion:   {name:'ライオン',    egg:'しっぽのたまご',   base:{kashiko:6, yasashi:8, geijutsu:10,tairyoku:16}},
-  griffon:{name:'グリフォン',  egg:'くちばしのたまご', base:{kashiko:14,yasashi:6, geijutsu:8, tairyoku:12}},
-  hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{kashiko:12,yasashi:16,geijutsu:8, tairyoku:4}}
+  usagi:  {name:'うさぎ',      egg:'わたげのたまご',   base:{kashiko:6, yasashi:11,geijutsu:6, tairyoku:7}},
+  dragon: {name:'ドラゴン',    egg:'くせげのたまご',   base:{kashiko:7, yasashi:5, geijutsu:6, tairyoku:12}},
+  unicorn:{name:'ユニコーン',  egg:'つののたまご',     base:{kashiko:8, yasashi:5, geijutsu:13,tairyoku:4}},
+  lion:   {name:'ライオン',    egg:'しっぽのたまご',   base:{kashiko:5, yasashi:5, geijutsu:6, tairyoku:14}},
+  griffon:{name:'グリフォン',  egg:'くちばしのたまご', base:{kashiko:12,yasashi:5, geijutsu:6, tairyoku:7}},
+  hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{kashiko:7, yasashi:13,geijutsu:7, tairyoku:3}}
 };
 const STAGE_NAMES=['たまご','あかちゃん','こども','おとな','キラキラ'];
 /* 育成しきい値。長期休みの種類によらず固定 */
@@ -337,7 +356,7 @@ const DECO={
 };
 
 function newPet(){
-  return {sp:null,fed:0,snacks:0,petName:null,since:null,
+  return {sp:null,fed:0,snacks:0,petName:null,since:null,alloc:0,
           stats:{kashiko:0,yasashi:0,geijutsu:0,tairyoku:0}};
 }
 
@@ -424,6 +443,12 @@ function loadState(){
       STATS.forEach(st=>{ if(typeof p.stats[st.k]!=='number') p.stats[st.k]=0; });
       Object.keys(p.stats).forEach(k=>{ if(!STATS.some(st=>st.k===k)) delete p.stats[k]; });
       delete p.points;
+      if(typeof p.alloc!=='number') p.alloc=0;
+      /* これまでのおやつぶんのランダム上昇が入っていなければ補う */
+      if(p.sp){
+        let lack=autoGains(p.fed)+p.alloc-sumStats(p);
+        while(lack-->0) p.stats[STATS[Math.floor(Math.random()*STATS.length)].k]++;
+      }
       if(!p.since&&p.sp) p.since=s2.start;
       s2.pets[w]=p;
     });
@@ -438,7 +463,12 @@ function realToday(){
   const d=new Date();
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function VD(){ if(!S.viewDate){ S.viewDate=realToday(); save(); } return S.viewDate; }
+function VD(){
+  const rt=realToday();
+  /* 切り替えられるのは「今日」と「前日」だけ。それより古い/先はリセット */
+  if(!S.viewDate || S.viewDate>rt || S.viewDate<addDays(rt,-1)){ S.viewDate=rt; save(); }
+  return S.viewDate;
+}
 function parseD(s){ const p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
 function dayDiff(a,b){ return Math.round((parseD(b)-parseD(a))/86400000); }
 function fmtMD(s){ const p=s.split('-'); return (+p[1])+'/'+(+p[2]); }
@@ -452,7 +482,9 @@ function inVacation(dateStr){ return dateStr>=S.start && dateStr<=S.end; }
 
 /* ---------- 表示する日の切り替え(手動) ---------- */
 function shiftDay(n){
-  S.viewDate=addDays(VD(),n);
+  const rt=realToday(), d=addDays(VD(),n);
+  if(d>rt||d<addDays(rt,-1)) return;
+  S.viewDate=d;
   save(); renderToday(); window.scrollTo(0,0);
 }
 function goToday(){
@@ -490,9 +522,11 @@ function nextInfo(fed){
   if(st>=4) return 'おやつ1こで パラメータ +1!';
   return 'つぎまで あと'+(STAGE_TH[st+1]-fed)+'かい';
 }
-/* 最終形態(おやつ20回)に到達したあと、おやつ1つ = パラメータ1ポイント */
-function usedPoints(p){ return STATS.reduce((a,st)=>a+(p.stats[st.k]||0),0); }
-function availPoints(p){ return Math.max(0, p.fed - STAGE_TH[4] - usedPoints(p)); }
+/* たまごが孵ってから最終形態までは、おやつ1つでランダムに1つ上がる。
+   最終形態に到達したあとは、おやつ1つ = すきなところに振れる1ポイント。 */
+function sumStats(p){ return STATS.reduce((a,st)=>a+(p.stats[st.k]||0),0); }
+function autoGains(fed){ return Math.max(0, Math.min(fed,STAGE_TH[4]) - STAGE_TH[1]); }
+function availPoints(p){ return Math.max(0, p.fed - STAGE_TH[4] - (p.alloc||0)); }
 function statTotal(p){
   const base=SPECIES[p.sp].base;
   return STATS.reduce((a,st)=>a+base[st.k]+p.stats[st.k],0);
@@ -550,7 +584,7 @@ function renderToday(){
     <span class="cd-deco d3">${deco[2]}</span><span class="cd-deco d4">${deco[3]}</span>
     ${cdHtml}
     <div class="date-nav">
-      <button onclick="shiftDay(-1)" aria-label="前の日">◀</button>
+      <button onclick="shiftDay(-1)" ${t<=addDays(rt,-1)?'disabled':''} aria-label="前の日">◀</button>
       <div class="dn-date ${vac?'small':''}">${dateTxt}</div>
       <button onclick="shiftDay(1)" ${t>=rt?'disabled':''} aria-label="次の日">▶</button>
     </div>
@@ -558,9 +592,7 @@ function renderToday(){
   </div>`;
 
   if(t!==rt){
-    const diff=dayDiff(t,rt);
-    html+=`<div class="day-banner" onclick="goToday()">
-      ${diff>0?`${diff}日前の記録を表示中`:`${-diff}日先を表示中`} ・ 今日は ${fmtLong(rt)} → <b>今日に移動 ▶</b></div>`;
+    html+=`<div class="day-banner" onclick="goToday()">前の日(${fmtLong(t)})を表示中 ・ <b>今日に移動 ▶</b></div>`;
   }
 
   /* その日のやること */
@@ -770,7 +802,6 @@ function renderGarden(){
       <h2>✨ ふたりの パラメータ</h2>
       <div class="stats-grid">${col('a')}${col('b')}</div>
       <div class="stat-legend">${STATS.map(st=>st.icon+' '+st.name).join('　')}</div>
-      <div class="stat-legend" style="margin-top:4px;">キラキラに なったあとの おやつ1こで、すきな ところを +1 できるよ</div>
     </div>`;
   }
 
@@ -779,8 +810,6 @@ function renderGarden(){
     <h2>🐾 ふたりの はこにわ</h2>
     ${scene}
     <div class="pet-panel">${panel('a')}${panel('b')}</div>
-    <div class="garden-note">おてつだいを ぜんぶできた日は おやつがもらえるよ🍪<br>
-      これまでの がんばりの合計で お花がふえていくよ🌸(いま ${flowers}こ)</div>
   </div>
   ${statsCard()}
   ${renderAlbum()}
@@ -822,7 +851,7 @@ function spawnHearts(who){
 function raiseStat(who,k){
   const p=S.pets[who];
   if(availPoints(p)<=0) return;
-  p.stats[k]++;
+  p.stats[k]++; p.alloc=(p.alloc||0)+1;
   save(); renderGarden();
   const nm=STATS.find(s=>s.k===k).name;
   toast('✨ '+nm+'が あがった! ('+statVal(p,k)+')');
@@ -834,6 +863,12 @@ function feed(who){
   const before=stageOf(p.fed);
   p.snacks--; p.fed++;
   if(!p.since) p.since=realToday();
+  /* あかちゃん〜おとなの間は、おやつ1つでランダムに1つ上がる */
+  let gained=null;
+  if(before>=1&&before<=3){
+    gained=STATS[Math.floor(Math.random()*STATS.length)];
+    p.stats[gained.k]=(p.stats[gained.k]||0)+1;
+  }
   save();
   const after=stageOf(p.fed);
   renderGarden();
@@ -847,38 +882,50 @@ function feed(who){
     setTimeout(()=>toast('🎉 '+nm+'が「'+STAGE_NAMES[after]+'」にせいちょう!'),500);
   }else if(after===0){
     toast('こつん… たまごが うごいた!');
+  }else if(gained){
+    toast('もぐもぐ… '+gained.icon+gained.name+' が +1!');
+  }else if(after>=4){
+    toast('もぐもぐ… ポイント +1! すきな ところを のばせるよ');
   }else{
-    toast(stageOf(p.fed)>=4?'もぐもぐ… パラメータポイント +1! ('+availPoints(p)+'こ)':'もぐもぐ… '+(p.petName||'ペット')+'は うれしそう!');
+    toast('もぐもぐ… '+(p.petName||'ペット')+'は うれしそう!');
   }
 }
 
 /* ---------- そつぎょうアルバム ---------- */
 function renderAlbum(){
   if(S.album.length===0) return '';
+  const THEMES=[
+    {bg:'linear-gradient(135deg,#FFF1F7 0%,#FDE9F5 55%,#F4ECFF 100%)', ac:'#F49AC4', halo:'#FFD9EC'},
+    {bg:'linear-gradient(135deg,#EFF7FF 0%,#E8F1FE 55%,#F1ECFF 100%)', ac:'#7FB6E8', halo:'#D8EAFB'},
+    {bg:'linear-gradient(135deg,#F0FBF4 0%,#E7F7EE 55%,#F5F6E9 100%)', ac:'#6FC79E', halo:'#CFF0DF'},
+    {bg:'linear-gradient(135deg,#FFF8EC 0%,#FEF1DE 55%,#FFF0F2 100%)', ac:'#E7B463', halo:'#FCE5BE'}
+  ];
   let items='';
   [...S.album].reverse().forEach((r,ri)=>{
     const idx=S.album.length-1-ri;
+    const th=THEMES[idx%THEMES.length];
     const days=r.since&&r.until?dayDiff(r.since,r.until)+1:null;
     let statsHtml='';
     STATS.forEach(st=>{
       const v=(SPECIES[r.sp].base[st.k]||0)+((r.stats&&r.stats[st.k])||0);
-      statsHtml+=`<span class="al-st">${st.icon}${v}</span>`;
+      statsHtml+=`<span class="al-st">${st.icon}<b>${v}</b></span>`;
     });
-    items+=`<div class="album-item">
-      <div class="al-img">${petIMG(r.sp,r.stage,72)}</div>
-      <div class="al-body">
-        <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||SPECIES[r.sp].name)}</div>
-        <div class="al-days">いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
-        <div class="al-sub">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}・🍪×${r.fed}</div>
-        <div class="al-stats">${statsHtml}</div>
+    items+=`<div class="al-card" style="background:${th.bg};--ac:${th.ac};">
+      <span class="al-sparkle s1">✦</span><span class="al-sparkle s2">✧</span>
+      <button class="al-del" onclick="delAlbum(${idx})">✕</button>
+      <div class="al-photo">
+        <span class="al-halo" style="background:radial-gradient(circle,${th.halo} 0%,rgba(255,255,255,0) 70%);"></span>
+        ${petIMG(r.sp,r.stage,78)}
       </div>
-      <button class="ev-del" onclick="delAlbum(${idx})">✕</button>
+      <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||SPECIES[r.sp].name)}</div>
+      <div class="al-ribbon">🎀 いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
+      <div class="al-meta">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}　🍪 ${r.fed}こ</div>
+      <div class="al-stats">${statsHtml}</div>
     </div>`;
   });
   return `<details class="card album-card">
-    <summary><div class="al-summary">🏅 そつぎょうアルバム <span class="tag t-lav">${S.album.length}ひき</span><span class="al-caret">▼</span></div></summary>
-    <div class="set-note" style="margin-top:10px;">たまごから そだて直したときに、それまでの子が ここに のこります。</div>
-    ${items}
+    <summary><div class="al-summary">🏅 そつぎょうアルバム<span class="al-caret">▼</span></div></summary>
+    <div class="al-list">${items}</div>
   </details>`;
 }
 function delAlbum(i){
@@ -1028,10 +1075,6 @@ function renderSettings(){
       <button class="btn-sub" style="margin-top:4px;" onclick="addHw('${who}')">＋ ${escH(S.names[who])}の宿題を追加</button>
     </div>`;
   }
-  let decoRows='';
-  for(let m=1;m<=12;m++){
-    decoRows+=`<div class="deco-row"><span class="deco-m">${m}月</span><span class="deco-e">${DECO[m].join(' ')}</span></div>`;
-  }
   el.innerHTML=`
   <div class="card">
     <h2>👦👧 名前</h2>
@@ -1040,14 +1083,12 @@ function renderSettings(){
   </div>
   <div class="card">
     <h2>📅 長期休みの期間</h2>
-    <div class="set-note">この期間の平日は「平日(長期休み)」、期間外の平日は「平日(ふだん)」のリストになります。土曜・日曜・祝日は一年中おなじです。<br>期間中だけ、上部に休みの名前とカウントダウンが表示されます。</div>
     <div class="form-row"><label>休みの名前(例:なつやすみ、ふゆやすみ、はるやすみ)</label><input type="text" id="set-vacname" value="${escA(S.vacName||'なつやすみ')}"></div>
     <div class="form-row"><label>はじまり</label><input type="date" id="set-start" value="${S.start}"></div>
     <div class="form-row"><label>おわり(カウントダウンの目標日)</label><input type="date" id="set-end" value="${S.end}"></div>
   </div>
   <div class="card">
     <h2>📝 毎日のやること</h2>
-    <div class="set-note">1行に1つずつ。曜日と期間で自動的に切り替わります。平日は、長期休みの期間中かどうかで自動的に使い分けます(どちらも表示は「平日」)。</div>
     <div class="form-row"><label>平日(ふだん・学校がある日)</label><textarea id="set-school">${escH(S.patterns.school.join('\n'))}</textarea></div>
     <div class="form-row"><label>平日(長期休みの期間中)</label><textarea id="set-weekday">${escH(S.patterns.weekday.join('\n'))}</textarea></div>
     <div class="form-row"><label>土曜</label><textarea id="set-saturday">${escH(S.patterns.saturday.join('\n'))}</textarea></div>
@@ -1066,16 +1107,9 @@ function renderSettings(){
   </div>
   <div class="card">
     <h2>🐾 ペットの管理</h2>
-    <div class="set-note">ひとりずつ選べます。そのまま育て続けても、たまごから育て直してもOK。<br>育て直しても、もう一人のペットと、持っているおやつの数はそのままです。それまでの子は「そつぎょうアルバム」に残ります。</div>
     ${petAdminRow('a')}${petAdminRow('b')}
   </div>
-  <div class="card">
-    <h2>🗓 四すみのかざり(月ごと)</h2>
-    <div class="set-note">今日タブの上部、四すみの絵文字は表示中の日付の「月」で自動的に変わります。</div>
-    ${decoRows}
-  </div>
   <button class="btn-main" onclick="saveSettings()">💾 設定を保存する</button>
-  <button class="btn-sub" onclick="newVacation()">🔄 新しい休みをはじめる(記録リセット)</button>
   <button class="btn-sub" style="opacity:.45;font-size:12px;" onclick="testSnack()">🍪 お試しおやつ+10(動作確認用)</button>
   <div class="section-gap"></div>`;
 }
@@ -1115,7 +1149,7 @@ function rechoosePet(who){
     if(willArchive){
       S.album.push({
         who, sp:p.sp, petName:p.petName, fed:p.fed, stage:st,
-        stats:Object.assign({},p.stats),
+        stats:Object.assign({},p.stats), alloc:p.alloc||0,
         since:p.since||S.start, until:realToday()
       });
     }
@@ -1125,17 +1159,6 @@ function rechoosePet(who){
   S.pets[who].snacks=snacks;
   save();
   startSetup(who);
-}
-function newVacation(){
-  if(!confirm('新しい休みを始めますか?\n\nリセットされるもの:\n・毎日のチェック記録\n・イベント\n・宿題の進み具合(0に戻る)\n・おやつ獲得の記録\n\n残るもの:\n・タスクのリスト内容、名前などの設定\n・ペット、そつぎょうアルバム、花畑')) return;
-  S.checks={};
-  S.granted={};
-  S.events=[];
-  ['a','b'].forEach(w=>{ (S.homework[w]||[]).forEach(hw=>hw.done=0); S.pets[w].snacks=0; });
-  S.viewDate=realToday();
-  save();
-  toast('🔄 リセットしました。名前と期間を設定して保存してね');
-  renderSettings();
 }
 function linesOf(id){
   const el=document.getElementById(id);
