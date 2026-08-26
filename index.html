@@ -301,6 +301,10 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 }
 .al-st b{font-size:12.5px;font-weight:800;color:#6B5560;margin-left:1px;}
 /* ---------- settings extras ---------- */
+.fed-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.fed-row span{font-size:11.5px;font-weight:800;color:var(--ink-soft);flex:none;}
+.fed-row input{width:70px;flex:none;padding:8px 10px;font-size:14px;}
+.fed-row button{border:none;background:#EDE6EF;color:#8B7A92;border-radius:12px;padding:9px 12px;font-size:12.5px;font-weight:800;font-family:inherit;cursor:pointer;flex:none;}
 .hw-block{background:#FBF8FB;border-radius:16px;padding:10px;margin-bottom:10px;}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:8px;cursor:pointer;}
 .switch-row input{width:44px;height:26px;flex:none;accent-color:#7ED8B4;}
@@ -460,11 +464,7 @@ function loadState(){
       Object.keys(p.stats).forEach(k=>{ if(!STATS.some(st=>st.k===k)) delete p.stats[k]; });
       delete p.points;
       if(typeof p.alloc!=='number') p.alloc=0;
-      /* これまでのおやつぶんのランダム上昇が入っていなければ補う */
-      if(p.sp){
-        let lack=autoGains(p.fed)+p.alloc-sumStats(p);
-        while(lack-->0) p.stats[STATS[Math.floor(Math.random()*STATS.length)].k]++;
-      }
+      if(p.sp) syncAutoStats(p);
       if(!p.since&&p.sp) p.since=s2.start;
       s2.pets[w]=p;
     });
@@ -563,6 +563,11 @@ function nextInfo(fed){
 function sumStats(p){ return STATS.reduce((a,st)=>a+(p.stats[st.k]||0),0); }
 function autoGains(fed){ return Math.max(0, Math.min(fed,STAGE_TH[4]) - STAGE_TH[1]); }
 function availPoints(p){ return Math.max(0, p.fed - STAGE_TH[4] - (p.alloc||0)); }
+/* おやつ回数に対して足りないランダム上昇ぶんを補う */
+function syncAutoStats(p){
+  let lack=autoGains(p.fed)+(p.alloc||0)-sumStats(p);
+  while(lack-->0) p.stats[STATS[Math.floor(Math.random()*STATS.length)].k]++;
+}
 function statTotal(p){
   const base=SPECIES[p.sp].base;
   return STATS.reduce((a,st)=>a+base[st.k]+p.stats[st.k],0);
@@ -1172,6 +1177,13 @@ function renderSettings(){
     <h2>🐾 ペットの管理</h2>
     ${petAdminRow('a')}${petAdminRow('b')}
   </div>
+  <div class="card">
+    <h2>💾 バックアップ</h2>
+    <div class="set-note">ホーム画面のアイコンを消したり、端末を替えると記録が消えます。ときどき「書き出す」を押して、出てきた文字をメモアプリなどに貼って保存しておいてください。<br>復元するときは、その文字をここに貼って「復元する」を押します。</div>
+    <button class="btn-sub" style="margin-top:0;" onclick="exportData()">📤 書き出す(コピー)</button>
+    <div class="form-row" style="margin-top:10px;"><textarea id="backup-box" placeholder="ここに書き出した文字が出ます。復元するときは、保存しておいた文字をここに貼り付けてください。" style="min-height:110px;font-size:12px;"></textarea></div>
+    <button class="btn-sub" style="margin-top:0;" onclick="importData()">📥 貼り付けた内容で復元する</button>
+  </div>
   <button class="btn-main" onclick="saveSettings()">💾 設定を保存する</button>
   <button class="btn-sub" style="opacity:.45;font-size:12px;" onclick="testSnack()">🍪 お試しおやつ+10(動作確認用)</button>
   <div class="section-gap"></div>`;
@@ -1194,7 +1206,27 @@ function petAdminRow(who){
   return `<div class="form-row"><label>${icon} ${nm}</label>
     ${st>0?`<button class="btn-sub" style="margin-top:0;" onclick="openNaming('${who}',false)">✏️ 名前を変える</button>`:''}
     <button class="btn-sub" ${st>0?'':'style="margin-top:0;"'} onclick="rechoosePet('${who}')">🥚 たまごから育て直す(この子だけ)</button>
+    <div class="fed-row">
+      <span>そだてた回数(復元用)</span>
+      <input type="number" id="fed-${who}" min="0" max="999" value="${p.fed}">
+      <button onclick="setFed('${who}')">反映</button>
+    </div>
   </div>`;
+}
+function setFed(who){
+  const el=document.getElementById('fed-'+who);
+  const v=Math.max(0,Math.min(999,parseInt(el.value)||0));
+  const p=S.pets[who];
+  if(!p.sp){ toast('先にたまごを選んでください'); return; }
+  if(v===p.fed){ toast('変わっていません'); return; }
+  if(!confirm(S.names[who]+'のペットの そだてた回数を '+p.fed+' → '+v+' にしますか?\n\nパラメータもその回数に合わせて計算し直します。')) return;
+  p.fed=v;
+  p.alloc=Math.min(p.alloc||0, Math.max(0, v-STAGE_TH[4]));
+  STATS.forEach(st=>{ p.stats[st.k]=0; });
+  syncAutoStats(p);
+  save();
+  toast('🍪 そだてた回数を '+v+' にしました');
+  renderSettings();
 }
 function rechoosePet(who){
   const p=S.pets[who];
@@ -1289,6 +1321,29 @@ function saveSettingsSilent(){
       if(nameEl){ hw.name=nameEl.value; hw.total=Math.max(1,parseInt(totalEl.value)||1); }
     });
   });
+}
+function exportData(){
+  const box=document.getElementById('backup-box');
+  box.value=JSON.stringify(S);
+  box.focus(); box.setSelectionRange(0,box.value.length);
+  let ok=false;
+  try{ ok=document.execCommand('copy'); }catch(e){}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(box.value).then(()=>{},()=>{});
+    ok=true;
+  }
+  toast(ok?'📋 コピーしました。メモに貼って保存してね':'📤 書き出しました。長押しでコピーしてね');
+}
+function importData(){
+  const v=document.getElementById('backup-box').value.trim();
+  if(!v){ toast('復元したい内容を貼り付けてください'); return; }
+  let o;
+  try{ o=JSON.parse(v); }catch(e){ toast('読み込めませんでした(内容が正しくないようです)'); return; }
+  if(!o||typeof o!=='object'||!o.pets){ toast('このアプリのバックアップではないようです'); return; }
+  const nm=(o.names&&o.names.a)?o.names.a+'・'+(o.names.b||''):'(名前不明)';
+  if(!confirm('いまのデータを、貼り付けた内容で上書きします。\n\n復元する内容: '+nm+'\n\nよろしいですか?')) return;
+  try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){ toast('保存できませんでした'); return; }
+  location.reload();
 }
 function testSnack(){
   if(!confirm('確認用に、選ばれている全ペットへおやつを10こずつ追加します。')) return;
