@@ -81,6 +81,7 @@ body{
 .task.green-bg.done .box{background:#AACB63;border-color:#AACB63;}
 .task .txt{font-size:15px;font-weight:700;}
 .task.done .txt{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--pink-soft);}
+.task-sep{height:1px;background:repeating-linear-gradient(90deg,#EFE3EA 0 6px,transparent 6px 12px);margin:10px 12px 12px;}
 .all-done-badge{
   margin-top:6px;text-align:center;font-size:13px;font-weight:800;
   color:#C97A9C;background:var(--pink-soft);border-radius:14px;padding:8px;
@@ -358,6 +359,8 @@ const SPECIES={
   hitsuji:{name:'ひつじ',      egg:'くものたまご',     base:{kashiko:7, yasashi:13,geijutsu:7, tairyoku:3}}
 };
 const STAGE_NAMES=['たまご','あかちゃん','こども','おとな','キラキラ'];
+/* リストの版。上げると保存済みデータのリストを一度だけ上書きする */
+const LISTS_V=1;
 /* 育成しきい値。長期休みの種類によらず固定 */
 const STAGE_TH=[0,3,9,17,20];
 
@@ -382,17 +385,15 @@ const DEFAULT_STATE={
   start:'2026-07-22',
   end:'2026-08-26',
   patterns:{
-    school:['あさのしたく','がっこうのじゅんび','しゅくだい','よるのしたく'],
-    weekday:['あさのしたく','べんきょうタイム','そとあそび・うんどう','よるのしたく'],
-    saturday:['あさのしたく','ならいごとのじゅんび','ならいごと がんばる','よるのしたく'],
-    sunday:['あさのしたく','おでかけのじゅんび','げんきに ごあいさつ','よるのしたく']
+    school:['送迎','掃除機','','アプリチェック','メルカリ価格変更','読書','ニュース','情報（昼食）','回答','送迎','炊飯器','洗濯物','タイピング','夕食準備','','情報（夕食）','飲料準備（皿洗い）','子ども薬','寝かしつけ・子どもチェック','','前日写真整理','アップロード'],
+    weekday:['洗濯物','掃除機','','アプリチェック','タイピング','勉強タイム','メルカリ価格変更','読書','ニュース','情報（昼食）','回答','炊飯器','夕食準備','','情報（夕食）','飲料準備（皿洗い）','子ども薬','寝かしつけ・子どもチェック','','前日写真整理','アップロード'],
+    saturday:['読書（前日夜）','回答（前日夜）','アプリチェック','タイピング','バレエ準備','ニュース','情報','メルカリ','飲料準備','前日写真整理','アップロード'],
+    sunday:['読書（前日夜）','回答（前日夜）','アプリチェック','タイピング','ニュース','情報','メルカリ','飲料準備','前日写真整理','アップロード']
   },
-  chores:{
-    a:['パジャマをたたむ','せんたくものをたたむ','じぶんのものをかたづける'],
-    b:['パジャマをたたむ','せんたくものをたたむ','じぶんのものをかたづける']
-  },
-  homework:{ a:[{name:'なつやすみのドリル',total:40,done:0}], b:[] },
+  chores:{ a:['パジャマ片付ける','洗濯物片付ける','整理整頓','食器を下げる'], b:['パジャマ片付ける','洗濯物片付ける','整理整頓','食器を下げる'] },
+  homework:{ a:[], b:[] },
   hwShow:{a:true,b:true},
+  listsV:LISTS_V,
   events:[],
   pets:{a:newPet(), b:newPet()},
   album:[],
@@ -466,6 +467,15 @@ function loadState(){
       if(!p.since&&p.sp) p.since=s2.start;
       s2.pets[w]=p;
     });
+    /* リストの版が古ければ、やること/お手伝い/宿題だけを一度だけ入れ替える
+       (ペット・成長・おやつ・チェック記録・イベントには触らない) */
+    if((s.listsV||0)<LISTS_V){
+      const d=def();
+      s2.patterns=d.patterns;
+      s2.chores=d.chores;
+      s2.homework=d.homework;
+      s2.listsV=LISTS_V;
+    }
     s2.ver=3;
     return s2;
   }catch(e){ return def(); }
@@ -521,6 +531,17 @@ function patternFor(dateStr){
 }
 
 /* ---------- チェック状態 ---------- */
+/* 同じ名前が複数あっても別々にチェックできるようにキーを作る。
+   空文字は「区切り」として扱う。 */
+function keyList(list){
+  const seen={}, out=[];
+  list.forEach(t=>{
+    if(t===''){ out.push({sep:true}); return; }
+    seen[t]=(seen[t]||0)+1;
+    out.push({name:t, key:seen[t]>1?t+'#'+seen[t]:t});
+  });
+  return out;
+}
 function checksFor(dateStr){
   if(!S.checks[dateStr]) S.checks[dateStr]={daily:{},ca:{},cb:{}};
   return S.checks[dateStr];
@@ -611,46 +632,44 @@ function renderToday(){
 
   /* その日のやること */
   const evTasks=ev?ev.tasks:[];
-  curDaily=pat.tasks.concat(evTasks);
+  curDaily=keyList(pat.tasks.concat(evTasks));
+  const real=curDaily.filter(x=>!x.sep);
+  const nPat=pat.tasks.length;
   const listTitle=(t===rt)?'今日':fmtLong(t);
   html+=`<div class="card"><h2>📝 ${listTitle}のやること <span class="tag ${pat.type==='sunday'?'t-sky':pat.type==='saturday'?'t-mint':'t-green'}">${pat.label}</span></h2>`;
-  if(curDaily.length===0){
+  if(real.length===0){
     html+=`<div class="empty-msg">やることが登録されていません<br>(設定 / イベントから追加できます)</div>`;
   }
-  pat.tasks.forEach((task,i)=>{
-    const done=!!ck.daily[task];
-    html+=`<div class="task ${pat.bg} ${done?'done':''}" onclick="toggleDaily(${i})">
-      <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
+  curDaily.forEach((it,i)=>{
+    if(i===nPat&&ev) html+=`<div style="font-size:13px;font-weight:800;margin:10px 2px 6px;color:#8A79B8;">🎪 ${escH(ev.name)}</div>`;
+    if(it.sep){ html+=`<div class="task-sep"></div>`; return; }
+    const done=!!ck.daily[it.key];
+    const bg=(i>=nPat)?'lav-bg':pat.bg;
+    html+=`<div class="task ${bg} ${done?'done':''}" onclick="toggleDaily(${i})">
+      <div class="box">${done?'✓':''}</div><div class="txt">${escH(it.name)}</div></div>`;
   });
-  if(ev){
-    html+=`<div style="font-size:13px;font-weight:800;margin:10px 2px 6px;color:#8A79B8;">🎪 ${escH(ev.name)}</div>`;
-    evTasks.forEach((task,j)=>{
-      const i=pat.tasks.length+j;
-      const done=!!ck.daily[task];
-      html+=`<div class="task lav-bg ${done?'done':''}" onclick="toggleDaily(${i})">
-        <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
-    });
-  }
-  if(curDaily.length>0 && curDaily.every(x=>ck.daily[x])){
+  if(real.length>0 && real.every(x=>ck.daily[x.key])){
     html+=`<div class="all-done-badge">🎉 やること 全部クリア!</div>`;
   }
   html+=`</div>`;
 
   /* お手伝い(2人分) */
   ['a','b'].forEach(who=>{
-    const list=S.chores[who];
+    const list=keyList(S.chores[who]);
+    const real=list.filter(x=>!x.sep);
     const ckKey=who==='a'?'ca':'cb';
-    const allDone=list.length>0 && list.every(x=>ck[ckKey][x]);
+    const allDone=real.length>0 && real.every(x=>ck[ckKey][x.key]);
     html+=`<div class="card"><h2>${who==='a'?'💙':'💗'} ${escH(S.names[who])}のお手伝い <span class="tag ${who==='a'?'t-sky':'t-pink'}">ペットのおやつ</span></h2>`;
-    if(list.length===0) html+=`<div class="empty-msg">お手伝いが登録されていません</div>`;
-    list.forEach((task,i)=>{
-      const done=!!ck[ckKey][task];
+    if(real.length===0) html+=`<div class="empty-msg">お手伝いが登録されていません</div>`;
+    list.forEach((it,i)=>{
+      if(it.sep){ html+=`<div class="task-sep"></div>`; return; }
+      const done=!!ck[ckKey][it.key];
       html+=`<div class="task ${who==='a'?'sky-bg':''} ${done?'done':''}" onclick="toggleChore('${who}',${i})">
-        <div class="box">${done?'✓':''}</div><div class="txt">${escH(task)}</div></div>`;
+        <div class="box">${done?'✓':''}</div><div class="txt">${escH(it.name)}</div></div>`;
     });
     if(allDone){
       html+=`<div class="all-done-badge">🍪 全部できた! おやつゲット!<br><span style="font-size:11.5px;">「はこにわ」でペットにあげてね</span></div>`;
-    }else if(list.length>0){
+    }else if(real.length>0){
       html+=`<div class="snack-note">全部 ✓ にすると おやつがもらえます</div>`;
     }
     html+=`</div>`;
@@ -682,21 +701,23 @@ function renderToday(){
 }
 
 function toggleDaily(i){
-  const task=curDaily[i];
-  if(task===undefined) return;
+  const it=curDaily[i];
+  if(!it||it.sep) return;
   const ck=checksFor(VD());
-  ck.daily[task]=!ck.daily[task];
+  ck.daily[it.key]=!ck.daily[it.key];
   save(); renderToday();
 }
 function toggleChore(who,i){
-  const task=S.chores[who][i];
-  if(task===undefined) return;
+  const list=keyList(S.chores[who]);
+  const it=list[i];
+  if(!it||it.sep) return;
   const t=VD();
   const ck=checksFor(t);
   const key=who==='a'?'ca':'cb';
-  ck[key][task]=!ck[key][task];
+  ck[key][it.key]=!ck[key][it.key];
   /* その日のぶんが全部そろったら おやつ付与(その日1回だけ・あとから入力してもOK) */
-  const all=S.chores[who].length>0 && S.chores[who].every(x=>ck[key][x]);
+  const real=list.filter(x=>!x.sep);
+  const all=real.length>0 && real.every(x=>ck[key][x.key]);
   if(!S.granted[t]) S.granted[t]={};
   if(all && !S.granted[t][who]){
     S.granted[t][who]=true;
@@ -1203,7 +1224,14 @@ function rechoosePet(who){
 function linesOf(id){
   const el=document.getElementById(id);
   if(!el) return [];
-  return el.value.split('\n').map(x=>x.trim()).filter(x=>x);
+  /* 空行は「区切り」として残す(連続する空行は1つに、前後の空行は落とす) */
+  const out=[];
+  el.value.split('\n').map(x=>x.trim()).forEach(x=>{
+    if(x===''){ if(out.length&&out[out.length-1]!=='') out.push(''); }
+    else out.push(x);
+  });
+  while(out.length&&out[out.length-1]==='') out.pop();
+  return out;
 }
 function saveSettings(){
   const na=document.getElementById('set-name-a').value.trim();
