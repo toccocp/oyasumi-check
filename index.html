@@ -112,7 +112,7 @@ body{
 .pet-col .p-stage{font-size:11.5px;color:var(--ink-soft);font-weight:700;margin:2px 0 6px;}
 .snack-btn{
   width:100%;border:none;border-radius:12px;padding:9px 2px;
-  font-size:12px;font-weight:800;font-family:inherit;color:#fff;
+  font-size:13.5px;font-weight:800;font-family:inherit;color:#fff;
   background:var(--pink);cursor:pointer;white-space:nowrap;
 }
 .pet-col.a .snack-btn{background:var(--sky);}
@@ -817,7 +817,7 @@ function renderGarden(){
     return `<div class="pet-col ${who}" id="panel-${who}">
       <div class="p-name">${escH(S.names[who])}の<br>${escH(label)}</div>
       <div class="p-stage">${STAGE_NAMES[st]} 🍪×${p.fed}</div>
-      <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">🍪 おやつをあげる${p.snacks>0?' ('+p.snacks+'こ)':''}</button>
+      <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">🍪をあげる${p.snacks>0?' ('+p.snacks+'こ)':''}</button>
       ${body}
       ${nameBtn}
     </div>`;
