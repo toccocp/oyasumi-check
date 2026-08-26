@@ -307,7 +307,8 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 .deco-row:last-child{border-bottom:none;}
 .deco-m{font-size:12.5px;font-weight:800;color:var(--ink-soft);width:36px;flex:none;}
 .deco-e{font-size:18px;letter-spacing:.12em;}
-.sp-hint{margin-top:12px;background:#fff;border-radius:16px;padding:10px 12px;font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.9;box-shadow:0 3px 10px rgba(160,140,180,.12);}
+.sp-hint{margin-top:12px;background:#fff;border-radius:16px;padding:12px;font-size:13px;font-weight:800;color:var(--ink);line-height:1.8;box-shadow:0 3px 10px rgba(160,140,180,.12);}
+.sp-mystery{font-size:14px;font-weight:800;color:#C97A9C;letter-spacing:.04em;}
 .hidden{display:none!important;}
 .section-gap{height:4px;}
 </style>
@@ -964,7 +965,7 @@ function renderAlbum(){
         <span class="al-halo" style="background:radial-gradient(circle,${th.halo} 0%,rgba(255,255,255,0) 70%);"></span>
         ${petIMG(r.sp,r.stage,78)}
       </div>
-      <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||SPECIES[r.sp].name)}</div>
+      <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||(r.stage>0?SPECIES[r.sp].name:SPECIES[r.sp].egg))}</div>
       <div class="al-ribbon">🎀 いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
       <div class="al-meta">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}　🍪 ${r.fed}こ</div>
       <div class="al-stats">${statsHtml}</div>
@@ -978,7 +979,7 @@ function renderAlbum(){
 function delAlbum(i){
   const r=S.album[i];
   if(!r) return;
-  if(!confirm('アルバムから「'+(r.petName||SPECIES[r.sp].name)+'」を削除しますか?\nもとに戻せません。')) return;
+  if(!confirm('アルバムから「'+(r.petName||(r.stage>0?SPECIES[r.sp].name:SPECIES[r.sp].egg))+'」を削除しますか?\nもとに戻せません。')) return;
   S.album.splice(i,1);
   save(); renderGarden();
 }
@@ -1210,7 +1211,7 @@ function setFed(who){
 function rechoosePet(who){
   const p=S.pets[who];
   if(p.sp){
-    const nm=p.petName||SPECIES[p.sp].name;
+    const nm=p.petName||(stageOf(p.fed)>0?SPECIES[p.sp].name:SPECIES[p.sp].egg);
     const st=stageOf(p.fed);
     const willArchive=(p.fed>0);
     if(!confirm(S.names[who]+'の「'+nm+'」を たまごから育て直しますか?\n\n'+
@@ -1355,8 +1356,8 @@ function renderSetup(){
   const sel=setupSel?SPECIES[setupSel]:null;
   let hint='';
   if(sel){
-    hint=`<div class="sp-hint">${sel.egg} … <b>${sel.name}</b> が うまれるよ<br>`+
-      STATS.map(st=>`${st.icon}${sel.base[st.k]}`).join('　')+`<br><span style="font-size:11px;color:#9C8791;">${STATS.map(st=>st.icon+st.name).join('　')}</span></div>`;
+    hint=`<div class="sp-hint">「${sel.egg}」を えらんだよ<br>
+      <span class="sp-mystery">なにが うまれるかな…?</span></div>`;
   }
   el.innerHTML=`<div class="setup-in">
     <h1>🥚 ${escH(S.names[who])}のたまごをえらぼう!</h1>
