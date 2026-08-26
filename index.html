@@ -102,19 +102,18 @@ body{
 .hw-btn.plus{background:var(--sky);} .hw-btn.minus{background:#D9CEDF;}
 .hw-done-msg{text-align:center;font-size:13px;font-weight:800;color:#5FA88A;margin-top:4px;}
 /* ---------- garden ---------- */
-.garden-card{padding:12px;}
+.garden-card{padding:12px 12px 11px;}
 .garden-scene{border-radius:18px;overflow:hidden;display:block;width:100%;}
-.pet-panel{display:flex;gap:10px;margin-top:12px;}
-.pet-col{flex:1;border-radius:16px;padding:10px;text-align:center;}
+.pet-panel{display:flex;gap:9px;margin-top:10px;}
+.pet-col{flex:1;min-width:0;border-radius:16px;padding:10px 8px 9px;text-align:center;}
 .pet-col.a{background:#F2F8FE;}
 .pet-col.b{background:var(--pink-pale);}
-.pet-col .p-name{font-size:13.5px;font-weight:800;line-height:1.45;}
-.pet-col .p-stage{font-size:12px;color:var(--ink-soft);font-weight:700;margin:2px 0 6px;}
-.pet-col .p-next{font-size:11px;color:var(--ink-soft);margin-top:5px;}
+.pet-col .p-name{font-size:13px;font-weight:800;line-height:1.4;}
+.pet-col .p-stage{font-size:11.5px;color:var(--ink-soft);font-weight:700;margin:2px 0 6px;}
 .snack-btn{
-  width:100%;border:none;border-radius:12px;padding:9px 4px;
-  font-size:13.5px;font-weight:800;font-family:inherit;color:#fff;
-  background:var(--pink);cursor:pointer;
+  width:100%;border:none;border-radius:12px;padding:9px 2px;
+  font-size:12px;font-weight:800;font-family:inherit;color:#fff;
+  background:var(--pink);cursor:pointer;white-space:nowrap;
 }
 .pet-col.a .snack-btn{background:var(--sky);}
 .snack-btn:disabled{background:#E3DAE6;color:#B4A8B8;}
@@ -238,11 +237,7 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 }
 @media (prefers-reduced-motion:reduce){.fx{display:none;}}
 /* ---------- pet stats (2匹よこ並び) ---------- */
-.stats-grid{display:flex;gap:9px;}
-.stat-col{flex:1;min-width:0;border-radius:16px;padding:10px 8px 8px;}
-.stat-col.a{background:#F2F8FE;}
-.stat-col.b{background:var(--pink-pale);}
-.sc-name{font-size:13px;font-weight:800;text-align:center;margin-bottom:8px;line-height:1.35;word-break:break-word;}
+.sc-rows{margin-top:9px;}
 .sc-row{display:flex;align-items:center;gap:5px;margin-bottom:5px;min-height:24px;}
 .sc-ic{
   font-size:14px;width:24px;height:24px;flex:none;line-height:1;padding:0;
@@ -260,11 +255,11 @@ textarea{resize:vertical;min-height:76px;line-height:1.7;}
 .sc-fill.k-geijutsu{background:linear-gradient(90deg,#D6C2F5,#B49BE8);}
 .sc-fill.k-tairyoku{background:linear-gradient(90deg,#AEE7C1,#7ED8B4);}
 .sc-v{font-size:12.5px;font-weight:800;width:21px;text-align:right;flex:none;}
-.sc-total{text-align:center;font-size:11.5px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 0;margin-top:4px;}
+.sc-total{text-align:center;font-size:11.5px;font-weight:800;color:#fff;background:var(--lav);border-radius:999px;padding:3px 0;margin-top:6px;}
 .sc-pt{text-align:center;font-size:10.5px;font-weight:800;margin-top:5px;color:var(--ink-soft);line-height:1.5;}
 .sc-pt.on{color:#3F8F6E;background:#E6F8EF;border-radius:10px;padding:5px 2px;}
-.sc-egg{text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-soft);padding:14px 2px;line-height:1.85;}
-.stat-legend{margin-top:10px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-soft);line-height:1.9;}
+.sc-egg{text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-soft);padding:16px 2px;line-height:1.85;}
+.stat-legend{margin-top:9px;text-align:center;font-size:11px;font-weight:700;color:var(--ink-soft);line-height:1.6;}
 /* ---------- album ---------- */
 .album-card{padding:16px;}
 .album-card summary{list-style:none;cursor:pointer;}
@@ -788,70 +783,54 @@ function renderGarden(){
     <g id="pet-b-g" class="${stageOf(pb.fed)===0?'pet-egg':'pet-idle'}">${petBW}</g>
   </svg></div>`;
 
+  /* ペットの姿とパラメータを1つの枠にまとめる */
+  let scale=STAGE_TH[4];
+  ['a','b'].forEach(w=>{
+    const p=S.pets[w];
+    if(p.sp) STATS.forEach(st=>{ scale=Math.max(scale,statVal(p,st.k)); });
+  });
   function panel(who){
     const p=S.pets[who];
-    if(!p.sp) return '';
+    if(!p.sp) return `<div class="pet-col ${who}"></div>`;
     const st=stageOf(p.fed);
     const label=st===0?SPECIES[p.sp].egg:(p.petName||'なまえを つけてね');
     const nameBtn=(st>0&&!p.petName)?`<button class="btn-sub" style="margin-top:6px;padding:7px 0;" onclick="openNaming('${who}',false)">✏️ なまえをつける</button>`:'';
-    return `<div class="pet-col ${who}" id="panel-${who}">
-      <div class="p-name">${escH(S.names[who])}の<br>${escH(label)}</div>
-      <div class="p-stage">${STAGE_NAMES[st]} 🍪×${p.fed}</div>
-      <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">
-        🍪 おやつをあげる${p.snacks>0?' ('+p.snacks+'こ)':''}
-      </button>
-      <div class="p-next">${nextInfo(p.fed)}</div>
-      ${nameBtn}
-    </div>`;
-  }
-
-  /* 2匹のパラメータを横に並べて表示 */
-  function statsCard(){
-    const hatched=['a','b'].filter(w=>S.pets[w].sp&&stageOf(S.pets[w].fed)>0);
-    if(hatched.length===0) return '';
-    let scale=STAGE_TH[4];
-    ['a','b'].forEach(w=>{
-      const p=S.pets[w];
-      if(p.sp) STATS.forEach(st=>{ scale=Math.max(scale,statVal(p,st.k)); });
-    });
-    function col(who){
-      const p=S.pets[who];
-      if(!p.sp) return `<div class="stat-col ${who}"><div class="sc-egg">まだ たまごを<br>えらんでいないよ</div></div>`;
-      if(stageOf(p.fed)===0) return `<div class="stat-col ${who}">
-        <div class="sc-name">${escH(S.names[who])}の<br>${escH(SPECIES[p.sp].egg)}</div>
-        <div class="sc-egg">🥚<br>うまれたら<br>パラメータが<br>あらわれるよ</div></div>`;
-      const pt=availPoints(p);
+    const pt=availPoints(p);
+    let body='';
+    if(st===0){
+      body=`<div class="sc-egg">🥚<br>うまれたら<br>パラメータが<br>あらわれるよ</div>`;
+    }else{
       let rows='';
-      STATS.forEach(st=>{
-        const v=statVal(p,st.k);
+      STATS.forEach(x=>{
+        const v=statVal(p,x.k);
         const w=Math.min(100,Math.round(v/scale*100));
         rows+=`<div class="sc-row">
-          <button class="sc-ic ${pt>0?'on':''}" ${pt>0?'':'disabled'} onclick="raiseStat('${who}','${st.k}')">${st.icon}</button>
-          <span class="sc-bar"><span class="sc-fill k-${st.k}" style="width:${w}%"></span></span>
+          <button class="sc-ic ${pt>0?'on':''}" ${pt>0?'':'disabled'} onclick="raiseStat('${who}','${x.k}')">${x.icon}</button>
+          <span class="sc-bar"><span class="sc-fill k-${x.k}" style="width:${w}%"></span></span>
           <span class="sc-v">${v}</span>
         </div>`;
       });
-      return `<div class="stat-col ${who}">
-        <div class="sc-name">${escH(p.petName||SPECIES[p.sp].name)}</div>
-        ${rows}
+      body=`<div class="sc-rows">${rows}</div>
         <div class="sc-total">そうごう ${statTotal(p)}</div>
-        <div class="sc-pt ${pt>0?'on':''}">${pt>0?'のばせる ×'+pt+' 🎁<br><span class="sc-tap">アイコンを タップ!</span>':(stageOf(p.fed)>=4?'おやつで ポイントゲット':'キラキラに なったら のばせるよ')}</div>
-      </div>`;
+        ${pt>0?`<div class="sc-pt on">のばせる ×${pt} 🎁<br><span class="sc-tap">アイコンを タップ!</span></div>`:''}`;
     }
-    return `<div class="card">
-      <h2>✨ ふたりの パラメータ</h2>
-      <div class="stats-grid">${col('a')}${col('b')}</div>
-      <div class="stat-legend">${STATS.map(st=>st.icon+' '+st.name).join('　')}</div>
+    return `<div class="pet-col ${who}" id="panel-${who}">
+      <div class="p-name">${escH(S.names[who])}の<br>${escH(label)}</div>
+      <div class="p-stage">${STAGE_NAMES[st]} 🍪×${p.fed}</div>
+      <button class="snack-btn" ${p.snacks<=0?'disabled':''} onclick="feed('${who}')">🍪 おやつをあげる${p.snacks>0?' ('+p.snacks+'こ)':''}</button>
+      ${body}
+      ${nameBtn}
     </div>`;
   }
+  const anyHatched=['a','b'].some(w=>S.pets[w].sp&&stageOf(S.pets[w].fed)>0);
 
   el.innerHTML=`
   <div class="card garden-card">
     <h2>🐾 ふたりの はこにわ</h2>
     ${scene}
     <div class="pet-panel">${panel('a')}${panel('b')}</div>
+    ${anyHatched?`<div class="stat-legend">${STATS.map(x=>x.icon+' '+x.name).join('　')}</div>`:''}
   </div>
-  ${statsCard()}
   ${renderAlbum()}
   <div class="section-gap"></div>`;
 }
