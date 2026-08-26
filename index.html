@@ -965,7 +965,7 @@ function renderAlbum(){
         <span class="al-halo" style="background:radial-gradient(circle,${th.halo} 0%,rgba(255,255,255,0) 70%);"></span>
         ${petIMG(r.sp,r.stage,78)}
       </div>
-      <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||(r.stage>0?SPECIES[r.sp].name:SPECIES[r.sp].egg))}</div>
+      <div class="al-name">${escH(S.names[r.who]||'')}の${escH(r.petName||SPECIES[r.sp].egg)}</div>
       <div class="al-ribbon">🎀 いっしょに すごした時間 <b>${days!==null?days:'?'}日</b></div>
       <div class="al-meta">${r.since?fmtMD(r.since):'?'} 〜 ${r.until?fmtMD(r.until):'?'}　🍪 ${r.fed}こ</div>
       <div class="al-stats">${statsHtml}</div>
@@ -979,7 +979,7 @@ function renderAlbum(){
 function delAlbum(i){
   const r=S.album[i];
   if(!r) return;
-  if(!confirm('アルバムから「'+(r.petName||(r.stage>0?SPECIES[r.sp].name:SPECIES[r.sp].egg))+'」を削除しますか?\nもとに戻せません。')) return;
+  if(!confirm('アルバムから「'+(r.petName||SPECIES[r.sp].egg)+'」を削除しますか?\nもとに戻せません。')) return;
   S.album.splice(i,1);
   save(); renderGarden();
 }
@@ -994,7 +994,7 @@ function openNaming(who,isBirth){
   el.innerHTML=`<div class="setup-in">
     ${isBirth?'<h1>🎉 おめでとう!</h1><div class="sub">あかちゃんが うまれたよ。<br>なまえを つけてあげてね。</div>':'<h1>✏️ なまえをつけよう</h1><div class="sub">'+escH(S.names[who])+'の ペットの なまえを きめてね</div>'}
     <div style="background:#fff;border-radius:20px;padding:14px 20px;display:inline-block;box-shadow:0 4px 12px rgba(160,140,180,.15);">${petIMG(p.sp,Math.max(1,stageOf(p.fed)),110)}</div>
-    <div class="sub" style="margin-top:8px;">${SPECIES[p.sp].egg}から うまれた ${SPECIES[p.sp].name}だよ!</div>
+    <div class="sub" style="margin-top:8px;">${SPECIES[p.sp].egg}から あかちゃんが うまれたよ!</div>
     <div class="form-row" style="text-align:left;margin-top:10px;"><label>なまえ(10文字まで)</label><input type="text" id="pet-name-input" maxlength="10" value="${escA(p.petName||'')}" placeholder="れい:ももちゃん"></div>
     <button class="btn-main" onclick="saveName()">✨ けってい</button>
   </div>`;
@@ -1211,7 +1211,7 @@ function setFed(who){
 function rechoosePet(who){
   const p=S.pets[who];
   if(p.sp){
-    const nm=p.petName||(stageOf(p.fed)>0?SPECIES[p.sp].name:SPECIES[p.sp].egg);
+    const nm=p.petName||SPECIES[p.sp].egg;
     const st=stageOf(p.fed);
     const willArchive=(p.fed>0);
     if(!confirm(S.names[who]+'の「'+nm+'」を たまごから育て直しますか?\n\n'+
